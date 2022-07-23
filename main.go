@@ -8,12 +8,12 @@ import (
 )
 
 var (
-	//go:embed web
+	//go:embed dist
 	dist embed.FS
 )
 
 func main() {
-	web, _ := fs.Sub(fs.FS(dist), "web")
+	web, _ := fs.Sub(dist, "dist")
 
 	http.Handle(
 		"/", http.FileServer(http.FS(web)),
