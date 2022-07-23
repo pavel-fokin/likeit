@@ -2,13 +2,13 @@ import React from "react";
 import ReactDOM from "react-dom";
 
 function App() {
+  const [likesCounter, setLikesCounter] = React.useState(0)
+
   return (
     <div className="mx-auto flex flex-1 flex-col items-center justify-center">
       <button
         className="relative inline-block text-lg group"
-        onClick={() => {
-          console.log("Clicked");
-        }}
+        onClick={() => setLikesCounter(prevCount => prevCount + 1)}
       >
         <span className="relative z-10 block px-5 py-3 overflow-hidden font-medium leading-tight text-gray-800 transition-colors duration-300 ease-out border-2 border-gray-900 rounded-lg group-hover:text-white">
           <span className="absolute inset-0 w-full h-full px-5 py-3 rounded-lg bg-gray-50"></span>
@@ -20,7 +20,7 @@ function App() {
           data-rounded="rounded-lg"
         ></span>
       </button>
-      <h1 className="mt-2">0 people liked this page</h1>
+      <h1 className="mt-2">{likesCounter} people liked this page</h1>
     </div>
   );
 }
