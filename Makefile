@@ -1,6 +1,6 @@
 .PHONY: clean
 clean:
-	@rm -rf dist/*.js dist/*.js.map dist/index.html
+	@rm -rf web/dist/*
 
 .PHONY: web
 web:

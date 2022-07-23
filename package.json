@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "build": "npx parcel build web/index.html"
+    "build": "npx parcel build web/index.html --dist-dir web/dist"
   },
   "devDependencies": {
     "parcel": "^2.6.2",

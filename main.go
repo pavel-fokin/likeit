@@ -13,12 +13,12 @@ const (
 )
 
 var (
-	//go:embed dist
+	//go:embed web/dist
 	dist embed.FS
 )
 
 func main() {
-	web, _ := fs.Sub(dist, "dist")
+	web, _ := fs.Sub(dist, "web/dist")
 
 	http.Handle(
 		"/", http.FileServer(http.FS(web)),
