@@ -14,14 +14,14 @@ const (
 
 var (
 	//go:embed web/dist
-	dist embed.FS
+	web embed.FS
 )
 
 func main() {
-	web, _ := fs.Sub(dist, "web/dist")
+	dist, _ := fs.Sub(web, "web/dist")
 
 	http.Handle(
-		"/", http.FileServer(http.FS(web)),
+		"/", http.FileServer(http.FS(dist)),
 	)
 
 	port := os.Getenv("PORT")
