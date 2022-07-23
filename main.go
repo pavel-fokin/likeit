@@ -2,10 +2,10 @@ package main
 
 import (
 	"embed"
-	"os"
 	"io/fs"
 	"log"
 	"net/http"
+	"os"
 )
 
 const (
@@ -27,8 +27,8 @@ func main() {
 	port := os.Getenv("PORT")
 
 	if port == "" {
-  	port = defaultPort
+		port = defaultPort
 	}
 
-	log.Fatal(http.ListenAndServe(":" + port, nil))
+	log.Fatal(http.ListenAndServe(":"+port, nil))
 }
