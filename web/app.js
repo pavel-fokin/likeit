@@ -1,3 +1,6 @@
+import React from "react";
+import ReactDOM from "react-dom";
+
 function App() {
   return (
     <div className="mx-auto flex flex-1 flex-col items-center justify-center">
