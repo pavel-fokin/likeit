@@ -2,9 +2,14 @@ package main
 
 import (
 	"embed"
+	"os"
 	"io/fs"
 	"log"
 	"net/http"
+)
+
+const (
+	defaultPort = "8080"
 )
 
 var (
@@ -19,5 +24,11 @@ func main() {
 		"/", http.FileServer(http.FS(web)),
 	)
 
-	log.Fatal(http.ListenAndServe(":8080", nil))
+	port := os.Getenv("PORT")
+
+	if port == "" {
+  	port = defaultPort
+	}
+
+	log.Fatal(http.ListenAndServe(":" + port, nil))
 }
