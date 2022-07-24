@@ -3,9 +3,11 @@ package main
 import (
 	"embed"
 	"io/fs"
-	"log"
-	"net/http"
 	"os"
+	"os/signal"
+	"syscall"
+
+	"pavel-fokin/likeit/internal/server"
 )
 
 const (
@@ -18,11 +20,10 @@ var (
 )
 
 func main() {
-	dist, _ := fs.Sub(web, "web/dist")
+	sig := make(chan os.Signal, 1)
+	signal.Notify(sig, syscall.SIGINT, syscall.SIGTERM)
 
-	http.Handle(
-		"/", http.FileServer(http.FS(dist)),
-	)
+	staticFS, _ := fs.Sub(web, "web/dist")
 
 	port := os.Getenv("PORT")
 
@@ -30,5 +31,11 @@ func main() {
 		port = defaultPort
 	}
 
-	log.Fatal(http.ListenAndServe(":"+port, nil))
+	httpServer := server.New(port, staticFS)
+
+	go httpServer.Run()
+
+	<-sig
+
+	httpServer.Shutdown()
 }
