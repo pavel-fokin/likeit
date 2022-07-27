@@ -2,26 +2,27 @@ package server
 
 import (
 	"context"
-	"io/fs"
 	"net/http"
 	"time"
 )
 
-const _shutdownTimeoutSecs = 5
+const (
+	_readTimeoutSecs     = 5
+	_writeTimeoutSecs    = 5
+	_shutdownTimeoutSecs = 5
+)
 
 type Server struct {
 	server *http.Server
 }
 
-func New(port string, static fs.FS) *Server {
-	mux := http.NewServeMux()
-	mux.Handle(
-		"/", http.FileServer(http.FS(static)),
-	)
+func New(port string, router http.Handler) *Server {
 
 	server := &http.Server{
-		Addr:    ":" + port,
-		Handler: mux,
+		Addr:         ":" + port,
+		Handler:      router,
+		ReadTimeout:  _readTimeoutSecs * time.Second,
+		WriteTimeout: _writeTimeoutSecs * time.Second,
 	}
 
 	return &Server{
@@ -29,7 +30,7 @@ func New(port string, static fs.FS) *Server {
 	}
 }
 
-func (s *Server) Run() {
+func (s *Server) Start() {
 	s.server.ListenAndServe()
 }
 

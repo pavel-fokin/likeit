@@ -31,9 +31,10 @@ func main() {
 		port = defaultPort
 	}
 
-	httpServer := server.New(port, staticFS)
+	router := server.NewStatic(staticFS)
+	httpServer := server.New(port, router)
 
-	go httpServer.Run()
+	go httpServer.Start()
 
 	<-sig
 
