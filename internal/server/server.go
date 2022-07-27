@@ -4,6 +4,8 @@ import (
 	"context"
 	"net/http"
 	"time"
+
+	"github.com/go-chi/chi/v5"
 )
 
 const (
@@ -14,9 +16,11 @@ const (
 
 type Server struct {
 	server *http.Server
+	router chi.Router
 }
 
-func New(port string, router http.Handler) *Server {
+func New(port string) *Server {
+	router := chi.NewRouter()
 
 	server := &http.Server{
 		Addr:         ":" + port,
@@ -27,6 +31,7 @@ func New(port string, router http.Handler) *Server {
 
 	return &Server{
 		server: server,
+		router: router,
 	}
 }
 

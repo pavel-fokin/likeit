@@ -31,8 +31,8 @@ func main() {
 		port = defaultPort
 	}
 
-	router := server.NewStatic(staticFS)
-	httpServer := server.New(port, router)
+	httpServer := server.New(port)
+	httpServer.SetupStaticRoutes(staticFS)
 
 	go httpServer.Start()
 
