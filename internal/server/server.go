@@ -10,7 +10,7 @@ import (
 )
 
 type Config struct {
-	Port            string `env:"LIKEIT_SERVER_PORT" envDefault:"8080"`
+	Port            string `env:"PORT" envDefault:"8080"`
 	ReadTimeout     int    `env:"LIKEIT_SERVER_READ_TIMEOUT" envDefault:"5"`
 	WriteTimeout    int    `env:"LIKEIT_SERVER_WRITE_TIMEOUT" envDefault:"5"`
 	ShutdownTimeout int    `env:"LIKEIT_SERVER_SHUTDOWN_TIMEOUT" envDefault:"5"`
