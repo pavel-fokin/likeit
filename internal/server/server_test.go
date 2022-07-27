@@ -6,7 +6,7 @@ import (
 
 func TestServerStartAndShutdown(t *testing.T) {
 	// setup
-	s := New("8080")
+	s := New(Config{})
 
 	// test
 	go s.Start()

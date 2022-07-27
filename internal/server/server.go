@@ -8,28 +8,31 @@ import (
 	"github.com/go-chi/chi/v5"
 )
 
-const (
-	_readTimeoutSecs     = 5
-	_writeTimeoutSecs    = 5
-	_shutdownTimeoutSecs = 5
-)
+type Config struct {
+	Port            string `env:"LIKEIT_SERVER_PORT" envDefault:"8080"`
+	ReadTimeout     int    `env:"LIKEIT_SERVER_READ_TIMEOUT" envDefault:"5"`
+	WriteTimeout    int    `env:"LIKEIT_SERVER_WRITE_TIMEOUT" envDefault:"5"`
+	ShutdownTimeout int    `env:"LIKEIT_SERVER_SHUTDOWN_TIMEOUT" envDefault:"5"`
+}
 
 type Server struct {
+	config Config
 	server *http.Server
 	router chi.Router
 }
 
-func New(port string) *Server {
+func New(config Config) *Server {
 	router := chi.NewRouter()
 
 	server := &http.Server{
-		Addr:         ":" + port,
+		Addr:         ":" + config.Port,
 		Handler:      router,
-		ReadTimeout:  _readTimeoutSecs * time.Second,
-		WriteTimeout: _writeTimeoutSecs * time.Second,
+		ReadTimeout:  time.Duration(config.ReadTimeout) * time.Second,
+		WriteTimeout: time.Duration(config.WriteTimeout) * time.Second,
 	}
 
 	return &Server{
+		config: config,
 		server: server,
 		router: router,
 	}
@@ -41,7 +44,7 @@ func (s *Server) Start() {
 
 func (s *Server) Shutdown() {
 	shutdownCtx, cancelShutdownCtx := context.WithTimeout(
-		context.Background(), _shutdownTimeoutSecs*time.Second,
+		context.Background(), time.Duration(s.config.ShutdownTimeout)*time.Second,
 	)
 	defer cancelShutdownCtx()
 
