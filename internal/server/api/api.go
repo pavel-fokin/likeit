@@ -4,14 +4,24 @@ import (
 	"net/http"
 )
 
-func LikesGet() http.HandlerFunc {
+type LikesCounter interface {
+	Count()
+}
+
+type LikesIncrementor interface {
+	Increment()
+}
+
+func LikesGet(likes LikesCounter) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
+		likes.Count()
 		w.Write([]byte("OK"))
 	}
 }
 
-func LikesPost() http.HandlerFunc {
+func LikesPost(likes LikesIncrementor) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
+		likes.Increment()
 		w.Write([]byte("OK"))
 	}
 }

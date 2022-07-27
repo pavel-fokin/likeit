@@ -11,6 +11,7 @@ import (
 	"github.com/caarlos0/env/v6"
 
 	"pavel-fokin/likeit/internal/server"
+	"pavel-fokin/likeit/internal/likes"
 )
 
 var (
@@ -38,9 +39,11 @@ func main() {
 
 	config := ReadConfig()
 
+	likes := likes.New()
+
 	httpServer := server.New(config.Server)
 	httpServer.SetupStaticRoutes(staticFS)
-	httpServer.SetupLikesAPIRoutes()
+	httpServer.SetupLikesAPIRoutes(likes)
 
 	go httpServer.Start()
 

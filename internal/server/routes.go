@@ -7,6 +7,11 @@ import (
 	"pavel-fokin/likeit/internal/server/api"
 )
 
+type Likes interface {
+	Count()
+	Increment()
+}
+
 func (s *Server) SetupStaticRoutes(static fs.FS) {
 	s.router.Handle(
 		"/", http.FileServer(http.FS(static)),
@@ -16,7 +21,7 @@ func (s *Server) SetupStaticRoutes(static fs.FS) {
 	)
 }
 
-func (s *Server) SetupLikesAPIRoutes() {
-	s.router.Get("/api/v1/likes", api.LikesGet())
-	s.router.Post("/api/v1/likes", api.LikesPost())
+func (s *Server) SetupLikesAPIRoutes(likes Likes) {
+	s.router.Get("/api/v1/likes", api.LikesGet(likes))
+	s.router.Post("/api/v1/likes", api.LikesPost(likes))
 }

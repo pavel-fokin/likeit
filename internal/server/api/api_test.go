@@ -6,19 +6,37 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/mock"
 )
+
+type Likes struct {
+	mock.Mock
+}
+
+func (m *Likes) Count() {
+	m.Called()
+}
+
+func (m *Likes) Increment() {
+	m.Called()
+}
 
 func TestLikesGet(t *testing.T) {
 	// setup
 	req, _ := http.NewRequest("", "", nil)
 	w := httptest.NewRecorder()
 
+	likes := &Likes{}
+	likes.On("Count").Return()
+
 	// test
-	LikesGet()(w, req)
+	LikesGet(likes)(w, req)
 
 	// assert
 	resp := w.Result()
 	assert.Equal(t, 200, resp.StatusCode)
+
+	likes.AssertNumberOfCalls(t, "Count", 1)
 }
 
 func TestLikesPost(t *testing.T) {
@@ -26,10 +44,15 @@ func TestLikesPost(t *testing.T) {
 	req, _ := http.NewRequest("", "", nil)
 	w := httptest.NewRecorder()
 
+	likes := &Likes{}
+	likes.On("Increment").Return()
+
 	// test
-	LikesPost()(w, req)
+	LikesPost(likes)(w, req)
 
 	// assert
 	resp := w.Result()
 	assert.Equal(t, 200, resp.StatusCode)
+
+	likes.AssertNumberOfCalls(t, "Increment", 1)
 }
