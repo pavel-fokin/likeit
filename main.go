@@ -40,6 +40,7 @@ func main() {
 
 	httpServer := server.New(config.Server)
 	httpServer.SetupStaticRoutes(staticFS)
+	httpServer.SetupLikesAPIRoutes()
 
 	go httpServer.Start()
 

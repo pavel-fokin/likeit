@@ -11,5 +11,5 @@ tests:
 	@go test -coverprofile=coverage.out ./... -count=1
 
 .PHONY: run
-run: web
+run: clean web
 	@go run main.go

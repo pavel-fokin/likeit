@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/go-chi/chi/v5"
+	"github.com/go-chi/chi/v5/middleware"
 )
 
 type Config struct {
@@ -23,6 +24,9 @@ type Server struct {
 
 func New(config Config) *Server {
 	router := chi.NewRouter()
+
+	router.Use(middleware.Logger)
+	router.Use(middleware.Recoverer)
 
 	server := &http.Server{
 		Addr:         ":" + config.Port,
