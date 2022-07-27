@@ -13,12 +13,14 @@ type Likes struct {
 	mock.Mock
 }
 
-func (m *Likes) Count() {
+func (m *Likes) Count() (int, error) {
 	m.Called()
+	return 0, nil
 }
 
-func (m *Likes) Increment() {
+func (m *Likes) Increment() error {
 	m.Called()
+	return nil
 }
 
 func TestLikesGet(t *testing.T) {

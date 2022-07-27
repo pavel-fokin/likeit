@@ -10,8 +10,9 @@ import (
 
 	"github.com/caarlos0/env/v6"
 
-	"pavel-fokin/likeit/internal/server"
+	"pavel-fokin/likeit/internal/db"
 	"pavel-fokin/likeit/internal/likes"
+	"pavel-fokin/likeit/internal/server"
 )
 
 var (
@@ -21,6 +22,7 @@ var (
 
 type Config struct {
 	Server server.Config
+	DB     db.Config
 }
 
 func ReadConfig() *Config {
@@ -39,7 +41,10 @@ func main() {
 
 	config := ReadConfig()
 
-	likes := likes.New()
+	db := db.New(config.DB)
+	defer db.Close()
+
+	likes := likes.New(db)
 
 	httpServer := server.New(config.Server)
 	httpServer.SetupStaticRoutes(staticFS)

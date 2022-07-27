@@ -1,21 +1,22 @@
 package api
 
 import (
+	"fmt"
 	"net/http"
 )
 
 type LikesCounter interface {
-	Count()
+	Count() (int, error)
 }
 
 type LikesIncrementor interface {
-	Increment()
+	Increment() error
 }
 
 func LikesGet(likes LikesCounter) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		likes.Count()
-		w.Write([]byte("OK"))
+		count, _ := likes.Count()
+		w.Write([]byte(fmt.Sprintf("%d", count)))
 	}
 }
 
