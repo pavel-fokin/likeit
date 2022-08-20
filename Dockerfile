@@ -4,7 +4,7 @@ RUN apk add g++ make py3-pip
 
 WORKDIR /frontend
 
-COPY package.json package-lock.json .postcssrc tailwind.config.js .
+COPY package.json package-lock.json .postcssrc tailwind.config.js ./
 COPY web web
 
 RUN npm install
