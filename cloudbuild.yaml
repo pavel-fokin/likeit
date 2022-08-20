@@ -23,6 +23,10 @@ steps:
       '1',
       '--max-instances',
       '4',
+      '--memory',
+      '128MiB',
+      '--timeout',
+      '30',
     ]
 
 images:
