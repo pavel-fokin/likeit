@@ -24,7 +24,7 @@ steps:
       '--max-instances',
       '4',
       '--memory',
-      '128MiB',
+      '128Mi',
       '--timeout',
       '30',
     ]
