@@ -12,7 +12,7 @@ steps:
     args: [
       'run',
       'deploy',
-      'like-it',
+      'likeit',
       '--image=europe-west1-docker.pkg.dev/$PROJECT_ID/docker/likeit:$SHORT_SHA',
       '--region',
       'europe-west1',
