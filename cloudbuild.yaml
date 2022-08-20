@@ -1,14 +1,19 @@
 steps:
   # Build image
   - name: 'gcr.io/cloud-builders/docker'
-    args: [ 'build', '-t', 'europe-west1-docker.pkg.dev/likeit-prod/docker/likeit:$SHORT_SHA', '.' ]
+    args: [ 'build', '-t', 'europe-west1-docker.pkg.dev/$PROJECT_ID/docker/likeit:$SHORT_SHA', '.' ]
+
+  # Docker push to Google Artifact Registry
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push', 'europe-west1-docker.pkg.dev/$PROJECT_ID/docker/likeit:$SHORT_SHA']
+
   # Deploy to CloudRun
   - name: 'gcr.io/cloud-builders/gcloud'
     args: [
       'run',
       'deploy',
       'like-it',
-      '--image=gcr.io/$PROJECT_ID/likeit:$SHORT_SHA',
+      '--image=europe-west1-docker.pkg.dev/$PROJECT_ID/docker/likeit:$SHORT_SHA',
       '--region',
       'europe-west1',
       '--platform',
@@ -21,4 +26,4 @@ steps:
     ]
 
 images:
-  - 'europe-west1-docker.pkg.dev/likeit-prod/docker/likeit:$SHORT_SHA'
+  - 'europe-west1-docker.pkg.dev/$PROJECT_ID/docker/likeit:$SHORT_SHA'
