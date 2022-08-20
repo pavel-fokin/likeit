@@ -1,5 +1,24 @@
 steps:
+  # Build image
   - name: 'gcr.io/cloud-builders/docker'
     args: [ 'build', '-t', 'europe-west1-docker.pkg.dev/likeit-prod/docker/likeit:$SHORT_SHA', '.' ]
+  # Deploy to CloudRun
+  - name: 'gcr.io/cloud-builders/gcloud'
+    args: [
+      'run',
+      'deploy',
+      'like-it',
+      '--image=gcr.io/$PROJECT_ID/likeit:$SHORT_SHA',
+      '--region',
+      'europe-west1',
+      '--platform',
+      'managed',
+      '--allow-unauthenticated',
+      '--min-instances',
+      '1',
+      '--max-instances',
+      '4',
+    ]
+
 images:
   - 'europe-west1-docker.pkg.dev/likeit-prod/docker/likeit:$SHORT_SHA'
