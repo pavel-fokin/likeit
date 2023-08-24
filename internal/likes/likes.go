@@ -1,25 +1,26 @@
 package likes
 
-import (
-	"database/sql"
-)
+import "context"
 
-type Likes struct {
-	db *sql.DB
+type LikesDB interface {
+	Count(ctx context.Context) (int, error)
+	Increment(ctx context.Context) error
 }
 
-func New(db *sql.DB) *Likes {
+type Likes struct {
+	db LikesDB
+}
+
+func New(db LikesDB) *Likes {
 	return &Likes{
 		db: db,
 	}
 }
 
-func (l *Likes) Count() (int, error) {
-	var count int
-	l.db.QueryRow("SELECT count FROM likes;").Scan(&count)
-	return count, nil
+func (l *Likes) Count(ctx context.Context) (int, error) {
+	return l.db.Count(ctx)
 }
-func (l *Likes) Increment() error {
-	l.db.Exec("UPDATE likes SET count = count + 1;")
-	return nil
+
+func (l *Likes) Increment(ctx context.Context) error {
+	return l.db.Increment(ctx)
 }

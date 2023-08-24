@@ -11,6 +11,7 @@ import (
 	"github.com/caarlos0/env/v6"
 
 	"pavel-fokin/likeit/internal/db"
+	likesdb "pavel-fokin/likeit/internal/db/likes"
 	"pavel-fokin/likeit/internal/likes"
 	"pavel-fokin/likeit/internal/server"
 )
@@ -44,7 +45,9 @@ func main() {
 	db := db.New(config.DB)
 	defer db.Close()
 
-	likes := likes.New(db)
+	likesDB := likesdb.New(db)
+
+	likes := likes.New(likesDB)
 
 	httpServer := server.New(config.Server)
 	httpServer.SetupStaticRoutes(staticFS)

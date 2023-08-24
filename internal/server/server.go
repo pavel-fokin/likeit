@@ -2,6 +2,7 @@ package server
 
 import (
 	"context"
+	"fmt"
 	"net/http"
 	"time"
 
@@ -43,6 +44,7 @@ func New(config Config) *Server {
 }
 
 func (s *Server) Start() {
+	fmt.Println("Starting likeit HTTP server...", s.config.Port)
 	s.server.ListenAndServe()
 }
 

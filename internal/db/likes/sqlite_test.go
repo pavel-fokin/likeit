@@ -1,6 +1,7 @@
 package likes
 
 import (
+	"context"
 	"testing"
 
 	"github.com/DATA-DOG/go-sqlmock"
@@ -8,7 +9,7 @@ import (
 )
 
 func TestLikesCount(t *testing.T) {
-	// setup
+	// Setup.
 	db, mock, _ := sqlmock.New()
 	rows := sqlmock.NewRows(
 		[]string{"count"},
@@ -17,23 +18,23 @@ func TestLikesCount(t *testing.T) {
 
 	likes := New(db)
 
-	// test
-	count, err := likes.Count()
+	// Test.
+	count, err := likes.Count(context.Background())
 
 	assert.Equal(t, count, 1)
 	assert.NoError(t, err)
 }
 
 func TestLikesIncrement(t *testing.T) {
-	// setup
+	// Setup.
 	db, mock, _ := sqlmock.New()
 	mock.ExpectExec("UPDATE likes SET count = count + 1;").
 		WillReturnResult(sqlmock.NewResult(1, 1))
 
 	likes := New(db)
 
-	// test
-	err := likes.Increment()
+	// Test.
+	err := likes.Increment(context.Background())
 
 	assert.NoError(t, err)
 }

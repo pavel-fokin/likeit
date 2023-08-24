@@ -8,8 +8,8 @@ import (
 )
 
 type Likes interface {
-	Count() (int, error)
-	Increment() error
+	api.LikesCounter
+	api.LikesIncrementor
 }
 
 func (s *Server) SetupStaticRoutes(static fs.FS) {
