@@ -12,6 +12,8 @@ RUN npm run build
 
 FROM golang:1.18-alpine as golang
 
+RUN apk add gcc musl-dev
+
 WORKDIR /app
 COPY . .
 COPY --from=node /frontend .
