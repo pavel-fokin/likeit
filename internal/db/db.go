@@ -8,12 +8,18 @@ import (
 )
 
 type Config struct {
-	URL string `env:"DATABASE_URL" envDefault:"db.sqlite3"`
+	DATABASE_URL string `env:"DATABASE_URL" envDefault:":memory:"`
 }
 
-func New(config Config) *sql.DB {
+func NewSqlite(config Config) *sql.DB {
 
-	conn, err := sql.Open("sqlite3", config.URL)
+	conn, err := sql.Open("sqlite3", config.DATABASE_URL)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	// Create initial DB.
+	_, err = conn.Exec(Schema)
 	if err != nil {
 		log.Fatal(err)
 	}

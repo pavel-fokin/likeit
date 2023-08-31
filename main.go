@@ -26,7 +26,7 @@ type Config struct {
 	DB     db.Config
 }
 
-func ReadConfig() *Config {
+func readConfig() *Config {
 	cfg := &Config{}
 	if err := env.Parse(cfg); err != nil {
 		fmt.Printf("%+v\n", err)
@@ -40,9 +40,9 @@ func main() {
 
 	staticFS, _ := fs.Sub(web, "web/dist")
 
-	config := ReadConfig()
+	config := readConfig()
 
-	db := db.New(config.DB)
+	db := db.NewSqlite(config.DB)
 	defer db.Close()
 
 	likesDB := likesdb.New(db)

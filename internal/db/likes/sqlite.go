@@ -3,6 +3,7 @@ package likes
 import (
 	"context"
 	"database/sql"
+	"fmt"
 )
 
 type Likes struct {
@@ -17,11 +18,17 @@ func New(db *sql.DB) *Likes {
 
 func (l *Likes) Count(ctx context.Context) (int, error) {
 	var count int
-	l.db.QueryRow("SELECT count FROM likes;").Scan(&count)
+	err := l.db.QueryRow("SELECT count FROM likes;").Scan(&count)
+	if err != nil {
+		return count, fmt.Errorf("failed to select likes: %w", err)
+	}
 	return count, nil
 }
 
 func (l *Likes) Increment(ctx context.Context) error {
-	l.db.Exec("UPDATE likes SET count = count + 1;")
+	_, err := l.db.Exec("UPDATE likes SET count = count + 1;")
+	if err != nil {
+		return fmt.Errorf("failed to update likes: %w", err)
+	}
 	return nil
 }

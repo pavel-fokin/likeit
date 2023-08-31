@@ -1,6 +1,8 @@
 package likes
 
-import "context"
+import (
+	"context"
+)
 
 type LikesDB interface {
 	Count(ctx context.Context) (int, error)
@@ -18,7 +20,11 @@ func New(db LikesDB) *Likes {
 }
 
 func (l *Likes) Count(ctx context.Context) (int, error) {
-	return l.db.Count(ctx)
+	likesCount, err := l.db.Count(ctx)
+	if err != nil {
+		return likesCount, err
+	}
+	return likesCount, nil
 }
 
 func (l *Likes) Increment(ctx context.Context) error {

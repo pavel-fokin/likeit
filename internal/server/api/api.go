@@ -2,8 +2,8 @@ package api
 
 import (
 	"context"
-	"fmt"
 	"net/http"
+	"pavel-fokin/likeit/internal/server/httputil"
 )
 
 type LikesCounter interface {
@@ -16,8 +16,19 @@ type LikesIncrementor interface {
 
 func LikesGet(likes LikesCounter) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		count, _ := likes.Count(r.Context())
-		w.Write([]byte(fmt.Sprintf("%d", count)))
+		count, err := likes.Count(r.Context())
+		if err != nil {
+			httputil.AsErrorResponse(w, err, http.StatusInternalServerError)
+			return
+		}
+
+		httputil.AsSuccessResponse(
+			w,
+			LikesResp{
+				Likes: count,
+			},
+			http.StatusOK,
+		)
 	}
 }
 
@@ -25,5 +36,6 @@ func LikesPost(likes LikesIncrementor) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		likes.Increment(r.Context())
 		w.Write([]byte("OK"))
+		httputil.AsErrorResponse(w, nil, http.StatusNoContent)
 	}
 }

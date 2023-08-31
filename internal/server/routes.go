@@ -22,6 +22,6 @@ func (s *Server) SetupStaticRoutes(static fs.FS) {
 }
 
 func (s *Server) SetupLikesAPIRoutes(likes Likes) {
-	s.router.Get("/api/v1/likes", api.LikesGet(likes))
-	s.router.Post("/api/v1/likes", api.LikesPost(likes))
+	s.router.Get("/api/likes", api.LikesGet(likes))
+	s.router.Post("/api/likes", api.LikesPost(likes))
 }
