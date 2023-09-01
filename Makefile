@@ -1,6 +1,10 @@
 .PHONY: clean
 clean:
-	@rm -rf web/dist/*
+	@rm -f web/dist/*.js web/dist/*.css web/dist/*.map web/dist/*.html web/dist/*.ico
+
+.PHONY: build-docker
+build-docker:
+	@docker build -t likeit -f Dockerfile .
 
 .PHONY: web
 web:
@@ -8,8 +12,12 @@ web:
 
 .PHONY: tests
 tests:
-	@go test -coverprofile=coverage.out ./... -count=1
+	@go test -cover ./... -count=1
 
 .PHONY: run
-run: clean web
-	@go run main.go
+run: web
+	@go run cmd/likeit-server/main.go
+
+.PHONY: run-docker
+run-docker:
+	@docker run likeit

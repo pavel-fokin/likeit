@@ -1,7 +1,6 @@
 package main
 
 import (
-	"embed"
 	"fmt"
 	"io/fs"
 	"os"
@@ -14,12 +13,13 @@ import (
 	likesdb "pavel-fokin/likeit/internal/db/likes"
 	"pavel-fokin/likeit/internal/likes"
 	"pavel-fokin/likeit/internal/server"
+	"pavel-fokin/likeit/web"
 )
 
-var (
-	//go:embed web/dist
-	web embed.FS
-)
+// var (
+// 	//go:embed web/dist
+// 	web embed.FS
+// )
 
 type Config struct {
 	Server server.Config
@@ -38,7 +38,7 @@ func main() {
 	sig := make(chan os.Signal, 1)
 	signal.Notify(sig, syscall.SIGINT, syscall.SIGTERM)
 
-	staticFS, _ := fs.Sub(web, "web/dist")
+	staticFS, _ := fs.Sub(web.Dist, "dist")
 
 	config := readConfig()
 

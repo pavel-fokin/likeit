@@ -27,7 +27,9 @@ func TestLikesCount(t *testing.T) {
 
 func TestLikesIncrement(t *testing.T) {
 	// Setup.
-	db, mock, _ := sqlmock.New()
+	db, mock, _ := sqlmock.New(
+		sqlmock.QueryMatcherOption(sqlmock.QueryMatcherEqual),
+	)
 	mock.ExpectExec("UPDATE likes SET count = count + 1;").
 		WillReturnResult(sqlmock.NewResult(1, 1))
 
