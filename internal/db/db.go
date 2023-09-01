@@ -4,7 +4,7 @@ import (
 	"database/sql"
 	"log"
 
-	_ "github.com/mattn/go-sqlite3"
+	_ "modernc.org/sqlite"
 )
 
 type Config struct {
@@ -13,7 +13,7 @@ type Config struct {
 
 func NewSqlite(config Config) *sql.DB {
 
-	conn, err := sql.Open("sqlite3", config.DATABASE_URL)
+	conn, err := sql.Open("sqlite", config.DATABASE_URL)
 	if err != nil {
 		log.Fatal(err)
 	}
