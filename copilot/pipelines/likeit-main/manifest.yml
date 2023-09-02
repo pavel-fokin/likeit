@@ -19,7 +19,7 @@ source:
     repository: https://github.com/pavel-fokin/likeit
     # Optional: specify the name of an existing CodeStar Connections connection.
     # connection_name: a-connection
-    #
+
 build:
   image: aws/codebuild/amazonlinux2-aarch64-standard:3.0
 
