@@ -1,4 +1,6 @@
 FROM node:lts-alpine as node
+ARG TARGETOS
+ARG TARGETARCH
 
 RUN apk add g++ make py3-pip
 
@@ -19,7 +21,7 @@ COPY --from=node /frontend .
 RUN go mod download
 RUN go mod verify
 
-RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o /server .
+RUN CGO_ENABLED=0 GOOS=$TARGETOS GOARCH=$TARGETARCH go build -o /server cmd/likeit-server/main.go
 
 FROM gcr.io/distroless/static-debian11
 

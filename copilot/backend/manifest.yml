@@ -28,6 +28,8 @@ exec: true     # Enable running commands in your container.
 network:
   connect: true # Enable Service Connect for intra-environment traffic between services.
 
+platform: linux/arm64
+
 # storage:
   # readonly_fs: true       # Limit to read-only access to mounted root filesystems.
  
