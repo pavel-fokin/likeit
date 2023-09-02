@@ -27,6 +27,11 @@ build:
 stages:
   - # The name of the environment.
     name: test
+    deployments:
+      deploy-env:
+        template_path: infrastructure/test.env.yml
+        template_config: infrastructure/test.env.params.json
+        stack_name: likeit-test
     # Optional: flag for manual approval action before deployment.
     # requires_approval: true
     # Optional: use test commands to validate this stage of your build.
