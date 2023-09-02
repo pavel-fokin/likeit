@@ -19,6 +19,9 @@ source:
     repository: https://github.com/pavel-fokin/likeit
     # Optional: specify the name of an existing CodeStar Connections connection.
     # connection_name: a-connection
+    #
+build:
+  image: aws/codebuild/amazonlinux2-aarch64-standard:3.0
 
 # This section defines the order of the environments your pipeline will deploy to.
 stages:
