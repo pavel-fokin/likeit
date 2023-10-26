@@ -12,7 +12,7 @@ COPY web web
 RUN npm install
 RUN npm run build
 
-FROM golang:1.18-alpine as golang
+FROM golang:1.21-alpine as golang
 
 WORKDIR /app
 COPY . .
