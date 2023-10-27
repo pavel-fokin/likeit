@@ -22,4 +22,3 @@ build-docker:
 .PHONY: run-docker
 run-docker:
 	@docker run -p 8080:8080 likeit
-q
