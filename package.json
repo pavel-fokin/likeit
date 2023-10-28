@@ -3,9 +3,10 @@
     "build": "npx parcel build web/index.html --dist-dir web/dist --public-url /static"
   },
   "devDependencies": {
-    "parcel": "^2.9.3"
+    "parcel": "^2.10.1"
   },
   "dependencies": {
+    "@radix-ui/themes": "^2.0.0",
     "postcss": "^8.4.28",
     "process": "^0.11.10",
     "react": "^18.2.0",
