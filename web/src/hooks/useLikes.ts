@@ -10,7 +10,7 @@ export const useLikes = () => {
       setLikesCounter(await api.LikesCount());
     };
     fetchLikes().catch(console.error);
-  }, [likesCounter]);
+  }, []);
 
   const likesIncrement = async () => {
     await api.LikesIncrement();
