@@ -4,7 +4,7 @@ import { Button, Text } from "@radix-ui/themes";
 
 import { useLikes } from "../hooks/useLikes";
 
-export const Likes = () => {
+export const LikeIt = () => {
   const {likesCounter, likesIncrement} = useLikes();
 
   const onLikeClick = async () => {
@@ -21,4 +21,4 @@ export const Likes = () => {
   );
 };
 
-export default { Likes };
+export default { LikeIt };

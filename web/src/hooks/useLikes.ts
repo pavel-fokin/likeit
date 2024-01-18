@@ -14,7 +14,7 @@ export const useLikes = () => {
 
   const likesIncrement = async () => {
     await api.LikesIncrement();
-    setLikesCounter((prevCount: number) => prevCount + 1);
+    setLikesCounter(await api.LikesCount());
   };
 
   return { likesCounter, likesIncrement };
