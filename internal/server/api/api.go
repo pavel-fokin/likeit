@@ -34,8 +34,10 @@ func LikesGet(likes LikesCounter) http.HandlerFunc {
 
 func LikesPost(likes LikesIncrementor) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		likes.Increment(r.Context())
-		w.Write([]byte("OK"))
-		httputil.AsErrorResponse(w, nil, http.StatusNoContent)
+    if err := likes.Increment(r.Context()); err != nil {
+			httputil.AsErrorResponse(w, err, http.StatusInternalServerError)
+			return
+    }
+		httputil.AsSuccessResponse(w, nil, http.StatusNoContent)
 	}
 }

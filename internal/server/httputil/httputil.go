@@ -24,11 +24,11 @@ func AsErrorResponse(
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(statusCode)
 
-	// make error response
+	// Make error response.
 	payload := ErrorResponse{}
 	payload.Data.Errors = []Error{{Message: fmt.Sprint(err)}}
 
-	// encode json
+	// Encode json.
 	json.NewEncoder(w).Encode(payload)
 }
 
