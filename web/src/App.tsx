@@ -1,5 +1,5 @@
-import { Flex, Theme } from '@radix-ui/themes';
 import React from 'react';
+import { Flex, Theme } from '@radix-ui/themes';
 
 import { Likes } from './components/Likes';
 

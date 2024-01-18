@@ -1,22 +1,14 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from "react";
 
-import { Button, Text } from '@radix-ui/themes';
+import { Button, Text } from "@radix-ui/themes";
 
-import api from '../api';
+import { useLikes } from "../hooks/useLikes";
 
 export const Likes = () => {
-  const [likesCounter, setLikesCounter] = useState(0);
-
-  useEffect(() => {
-    const fetchLikes = async () => {
-      setLikesCounter(await api.LikesCount());
-    };
-    fetchLikes().catch(console.error);
-  }, [likesCounter]);
+  const {likesCounter, likesIncrement} = useLikes();
 
   const onLikeClick = async () => {
-    await api.LikesIncrement();
-    setLikesCounter((prevCount) => prevCount + 1);
+    await likesIncrement();
   };
 
   return (
