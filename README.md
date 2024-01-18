@@ -6,7 +6,7 @@ What can be easier than page with one button? The aim of this project to try bes
 
 ## List of best practices
 
-- Project Decision Records, aka Architectural Decision Records (ADRs).
+- Decisions Logs, aka Architectural Decision Records (ADRs). [0001-decisions-log](docs/decisions/0001-decisions-log.md)
 - Semantic structuring.
 - Embed React app into a Go binary.
 
