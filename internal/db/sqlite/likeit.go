@@ -1,29 +1,42 @@
 // This package contains the implementation of the LikeItSqlite struct.
-package db
+package sqlite
 
 import (
 	"context"
 	"database/sql"
 	"fmt"
+	"log"
+
+	_ "modernc.org/sqlite"
 
 	"pavel-fokin/likeit/internal/app"
 )
 
-type LikeItSqlite struct {
+type LikeIt struct {
 	db *sql.DB
 }
 
-var _ app.DB = (*LikeItSqlite)(nil)
+var _ app.DB = (*LikeIt)(nil)
 
-// NewLikesSqlite creates a new LikesSqlite instance.
-func NewLikeItSqlite(db *sql.DB) *LikeItSqlite {
-	return &LikeItSqlite{
-		db: db,
+func New(dbURL string) (app.DB, func() error) {
+	db, err := sql.Open("sqlite", dbURL)
+	if err != nil {
+		log.Fatal(err)
 	}
+
+	// Create initial DB.
+	_, err = db.Exec(SchemaSqlite)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	return &LikeIt{
+		db: db,
+	}, db.Close
 }
 
 // CountLikes returns the number of likes.
-func (l *LikeItSqlite) CountLikes(ctx context.Context) (app.Likes, error) {
+func (l *LikeIt) CountLikes(ctx context.Context) (app.Likes, error) {
 	var count int
 	err := l.db.QueryRowContext(ctx, "SELECT count FROM likes;").Scan(&count)
 	if err != nil {
@@ -33,7 +46,7 @@ func (l *LikeItSqlite) CountLikes(ctx context.Context) (app.Likes, error) {
 }
 
 // IncrementLikes increments the number of likes.
-func (l *LikeItSqlite) IncrementLikes(ctx context.Context) error {
+func (l *LikeIt) IncrementLikes(ctx context.Context) error {
 	_, err := l.db.ExecContext(ctx, "UPDATE likes SET count = count + 1;")
 	if err != nil {
 		return fmt.Errorf("failed to update likes with increment: %w", err)

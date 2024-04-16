@@ -1,4 +1,4 @@
-package server
+package api
 
 import (
 	"context"
@@ -23,7 +23,7 @@ func TestGetLikes(t *testing.T) {
 		likes.On("CountLikes").Return(nil)
 
 		// Test.
-		getLikes(likes)(w, req)
+		GetLikes(likes)(w, req)
 
 		// Assert.
 		resp := w.Result()
@@ -41,7 +41,7 @@ func TestGetLikes(t *testing.T) {
 		likes.On("CountLikes").Return(fmt.Errorf("some error"))
 
 		// Test.
-		getLikes(likes)(w, req)
+		GetLikes(likes)(w, req)
 
 		// Assert.
 		resp := w.Result()
@@ -63,7 +63,7 @@ func TestLikesPost(t *testing.T) {
 		likes.On("IncrementLikes").Return(nil)
 
 		// Test.
-		postLikes(likes)(w, req)
+		PostLikes(likes)(w, req)
 
 		// Assert.
 		resp := w.Result()
@@ -83,7 +83,7 @@ func TestLikesPost(t *testing.T) {
 		likes.On("IncrementLikes").Return(fmt.Errorf("error"))
 
 		// Test.
-		postLikes(likes)(w, req)
+		PostLikes(likes)(w, req)
 
 		// Assert.
 		resp := w.Result()

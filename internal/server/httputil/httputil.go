@@ -1,4 +1,4 @@
-package server
+package httputil
 
 import (
 	"encoding/json"
@@ -18,7 +18,7 @@ type ErrorResponse struct {
 }
 
 // AsErrorResponse.
-func asErrorResponse(
+func AsErrorResponse(
 	w http.ResponseWriter, err error, statusCode int,
 ) {
 	w.Header().Set("Content-Type", "application/json")
@@ -33,7 +33,7 @@ func asErrorResponse(
 }
 
 // AsSuccessResponse.
-func asSuccessResponse(
+func AsSuccessResponse(
 	w http.ResponseWriter, payload interface{}, statusCode int,
 ) {
 	if payload != nil {

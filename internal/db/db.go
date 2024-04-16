@@ -2,11 +2,10 @@
 package db
 
 import (
-	"database/sql"
 	"log"
-	"pavel-fokin/likeit/internal/app"
 
-	_ "modernc.org/sqlite"
+	"pavel-fokin/likeit/internal/app"
+	"pavel-fokin/likeit/internal/db/sqlite"
 )
 
 type Config struct {
@@ -21,24 +20,9 @@ type closeFunc func() error
 func New(config Config) (app.DB, closeFunc) {
 	switch config.DATABASE_TYPE {
 	case "sqlite":
-		return newSqliteDB(config)
+		return sqlite.New(config.DATABASE_URL)
 	default:
 		log.Fatalf("unsupported database type: %s", config.DATABASE_TYPE)
 		return nil, nil
 	}
-}
-
-func newSqliteDB(config Config) (app.DB, closeFunc) {
-	db, err := sql.Open("sqlite", config.DATABASE_URL)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	// Create initial DB.
-	_, err = db.Exec(SchemaSqlite)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	return NewLikeItSqlite(db), db.Close
 }
