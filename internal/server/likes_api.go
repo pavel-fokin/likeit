@@ -4,10 +4,12 @@ import (
 	"context"
 	"log/slog"
 	"net/http"
+
+	"pavel-fokin/likeit/internal/app"
 )
 
 type LikesCounter interface {
-	CountLikes(ctx context.Context) (int, error)
+	CountLikes(ctx context.Context) (app.Likes, error)
 }
 
 type LikesIncrementor interface {
@@ -26,7 +28,7 @@ func getLikes(likes LikesCounter) http.HandlerFunc {
 		asSuccessResponse(
 			w,
 			respGetLikes{
-				Likes: count,
+				Likes: int(count),
 			},
 			http.StatusOK,
 		)

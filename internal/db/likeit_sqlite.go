@@ -5,30 +5,30 @@ import (
 	"database/sql"
 	"fmt"
 
-	"pavel-fokin/likeit/internal/likeit"
+	"pavel-fokin/likeit/internal/app"
 )
 
 type LikeItSqlite struct {
 	db *sql.DB
 }
 
-var _ likeit.DB = (*LikeItSqlite)(nil)
+var _ app.DB = (*LikeItSqlite)(nil)
 
 // NewLikesSqlite creates a new LikesSqlite instance.
-func NewLikesSqlite(db *sql.DB) *LikeItSqlite {
+func NewLikeItSqlite(db *sql.DB) *LikeItSqlite {
 	return &LikeItSqlite{
 		db: db,
 	}
 }
 
 // CountLikes returns the number of likes.
-func (l *LikeItSqlite) CountLikes(ctx context.Context) (int, error) {
+func (l *LikeItSqlite) CountLikes(ctx context.Context) (app.Likes, error) {
 	var count int
 	err := l.db.QueryRow("SELECT count FROM likes;").Scan(&count)
 	if err != nil {
-		return 0, fmt.Errorf("failed to select likes count: %w", err)
+		return app.Likes(0), fmt.Errorf("failed to select likes count: %w", err)
 	}
-	return count, nil
+	return app.Likes(count), nil
 }
 
 // IncrementLikes increments the number of likes.

@@ -1,4 +1,4 @@
-package likeit
+package app
 
 import (
 	"context"
@@ -11,18 +11,18 @@ import (
 func TestCountLikes(t *testing.T) {
 	// Setup.
 	mockLikesDB := &mockLikeItDB{}
-	likeIt := &LikeIt{
+	likeIt := &App{
 		db: mockLikesDB,
 	}
 
 	// Mock the behavior of the likesdb.Count method.
-	mockLikesDB.On("CountLikes", context.Background()).Return(5, nil)
+	mockLikesDB.On("CountLikes", context.Background()).Return(Likes(5), nil)
 
 	// Test.
 	count, err := likeIt.CountLikes(context.Background())
 
 	// Assert the expected result.
-	assert.Equal(t, 5, count)
+	assert.Equal(t, Likes(5), count)
 	assert.NoError(t, err)
 
 	// Verify that the Count method was called.
@@ -32,7 +32,7 @@ func TestCountLikes(t *testing.T) {
 func TestIncrementLikes(t *testing.T) {
 	// Setup.
 	mockLikesDB := &mockLikeItDB{}
-	likeIt := &LikeIt{
+	likeIt := &App{
 		db: mockLikesDB,
 	}
 
@@ -54,9 +54,9 @@ type mockLikeItDB struct {
 	mock.Mock
 }
 
-func (m *mockLikeItDB) CountLikes(ctx context.Context) (int, error) {
+func (m *mockLikeItDB) CountLikes(ctx context.Context) (Likes, error) {
 	args := m.Called(ctx)
-	return args.Int(0), args.Error(1)
+	return args.Get(0).(Likes), args.Error(1)
 }
 
 func (m *mockLikeItDB) IncrementLikes(ctx context.Context) error {

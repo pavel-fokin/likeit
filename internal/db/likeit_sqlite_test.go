@@ -6,6 +6,8 @@ import (
 
 	"github.com/DATA-DOG/go-sqlmock"
 	"github.com/stretchr/testify/assert"
+
+	"pavel-fokin/likeit/internal/app"
 )
 
 func TestLikesCount(t *testing.T) {
@@ -16,12 +18,12 @@ func TestLikesCount(t *testing.T) {
 	).AddRow(1)
 	mock.ExpectQuery("SELECT count FROM likes;").WillReturnRows(rows)
 
-	likes := NewLikesSqlite(db)
+	likes := NewLikeItSqlite(db)
 
 	// Test.
 	count, err := likes.CountLikes(context.Background())
 
-	assert.Equal(t, count, 1)
+	assert.Equal(t, count, app.Likes(1))
 	assert.NoError(t, err)
 }
 
@@ -33,7 +35,7 @@ func TestLikesIncrement(t *testing.T) {
 	mock.ExpectExec("UPDATE likes SET count = count + 1;").
 		WillReturnResult(sqlmock.NewResult(1, 1))
 
-	likes := NewLikesSqlite(db)
+	likes := NewLikeItSqlite(db)
 
 	// Test.
 	err := likes.IncrementLikes(context.Background())

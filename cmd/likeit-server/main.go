@@ -10,8 +10,8 @@ import (
 
 	"github.com/caarlos0/env/v6"
 
+	"pavel-fokin/likeit/internal/app"
 	"pavel-fokin/likeit/internal/db"
-	"pavel-fokin/likeit/internal/likeit"
 	"pavel-fokin/likeit/internal/server"
 	"pavel-fokin/likeit/web"
 )
@@ -37,14 +37,14 @@ func main() {
 
 	config := readConfig()
 
-	likeItDB, close := db.New(config.DB)
+	likeitDB, close := db.New(config.DB)
 	defer close()
 
-	likeIt := likeit.New(likeItDB)
+	likeitApp := app.New(likeitDB)
 
 	httpServer := server.New(ctx, config.Server)
 	httpServer.SetupStaticRoutes(staticFS)
-	httpServer.SetupLikesAPIRoutes(likeIt)
+	httpServer.SetupLikesAPIRoutes(likeitApp)
 
 	go httpServer.Start()
 

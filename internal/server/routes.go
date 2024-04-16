@@ -5,7 +5,7 @@ import (
 	"net/http"
 )
 
-type LikeIt interface {
+type App interface {
 	LikesCounter
 	LikesIncrementor
 }
@@ -19,7 +19,7 @@ func (s *Server) SetupStaticRoutes(static fs.FS) {
 	)
 }
 
-func (s *Server) SetupLikesAPIRoutes(likes LikeIt) {
+func (s *Server) SetupLikesAPIRoutes(likes App) {
 	s.router.Get("/api/likes", getLikes(likes))
 	s.router.Post("/api/likes", postLikes(likes))
 }
