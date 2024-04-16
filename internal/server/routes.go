@@ -1,15 +1,22 @@
 package server
 
 import (
+	"context"
 	"io/fs"
 	"net/http"
-
-	"pavel-fokin/likeit/internal/server/api"
 )
 
+type LikesCounter interface {
+	CountLikes(ctx context.Context) (int, error)
+}
+
+type LikesIncrementor interface {
+	IncrementLikes(ctx context.Context) error
+}
+
 type Likes interface {
-	api.LikesCounter
-	api.LikesIncrementor
+	LikesCounter
+	LikesIncrementor
 }
 
 func (s *Server) SetupStaticRoutes(static fs.FS) {
@@ -22,6 +29,6 @@ func (s *Server) SetupStaticRoutes(static fs.FS) {
 }
 
 func (s *Server) SetupLikesAPIRoutes(likes Likes) {
-	s.router.Get("/api/likes", api.LikesGet(likes))
-	s.router.Post("/api/likes", api.LikesPost(likes))
+	s.router.Get("/api/likes", getLikes(likes))
+	s.router.Post("/api/likes", postLikes(likes))
 }
