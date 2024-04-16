@@ -19,7 +19,7 @@ func TestLikesCount(t *testing.T) {
 	likes := NewLikesSqlite(db)
 
 	// Test.
-	count, err := likes.Count(context.Background())
+	count, err := likes.CountLikes(context.Background())
 
 	assert.Equal(t, count, 1)
 	assert.NoError(t, err)
@@ -36,7 +36,7 @@ func TestLikesIncrement(t *testing.T) {
 	likes := NewLikesSqlite(db)
 
 	// Test.
-	err := likes.Increment(context.Background())
+	err := likes.IncrementLikes(context.Background())
 
 	assert.NoError(t, err)
 }

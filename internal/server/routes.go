@@ -14,7 +14,7 @@ type LikesIncrementor interface {
 	IncrementLikes(ctx context.Context) error
 }
 
-type Likes interface {
+type LikeIt interface {
 	LikesCounter
 	LikesIncrementor
 }
@@ -28,7 +28,7 @@ func (s *Server) SetupStaticRoutes(static fs.FS) {
 	)
 }
 
-func (s *Server) SetupLikesAPIRoutes(likes Likes) {
+func (s *Server) SetupLikesAPIRoutes(likes LikeIt) {
 	s.router.Get("/api/likes", getLikes(likes))
 	s.router.Post("/api/likes", postLikes(likes))
 }

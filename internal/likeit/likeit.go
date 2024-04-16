@@ -4,29 +4,32 @@ import (
 	"context"
 )
 
-type LikesDB interface {
-	Count(ctx context.Context) (int, error)
-	Increment(ctx context.Context) error
+type DB interface {
+	CountLikes(ctx context.Context) (int, error)
+	IncrementLikes(ctx context.Context) error
 }
 
 type LikeIt struct {
-	likesdb LikesDB
+	db DB
 }
 
-func New(db LikesDB) *LikeIt {
+func New(db DB) *LikeIt {
 	return &LikeIt{
-		likesdb: db,
+		db: db,
 	}
 }
 
 func (l *LikeIt) CountLikes(ctx context.Context) (int, error) {
-	likesCount, err := l.likesdb.Count(ctx)
+	likesCount, err := l.db.CountLikes(ctx)
 	if err != nil {
-		return likesCount, err
+		return 0, err
 	}
 	return likesCount, nil
 }
 
 func (l *LikeIt) IncrementLikes(ctx context.Context) error {
-	return l.likesdb.Increment(ctx)
+	if err := l.db.IncrementLikes(ctx); err != nil {
+		return err
+	}
+	return nil
 }
