@@ -1,18 +1,9 @@
 package server
 
 import (
-	"context"
 	"io/fs"
 	"net/http"
 )
-
-type LikesCounter interface {
-	CountLikes(ctx context.Context) (int, error)
-}
-
-type LikesIncrementor interface {
-	IncrementLikes(ctx context.Context) error
-}
 
 type LikeIt interface {
 	LikesCounter

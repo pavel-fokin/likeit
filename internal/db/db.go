@@ -9,8 +9,8 @@ import (
 )
 
 type Config struct {
-	DATABASE_TYPE string `env:"DATABASE_TYPE" envDefault:"sqlite"`
-	DATABASE_URL  string `env:"DATABASE_URL" envDefault:":memory:"`
+	DATABASE_TYPE string `env:"LIKEIT_DATABASE_TYPE" envDefault:"sqlite"`
+	DATABASE_URL  string `env:"LIKEIT_DATABASE_URL" envDefault:":memory:"`
 }
 
 type closeFunc func() error

@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"io/fs"
+	"log"
 	"os/signal"
 	"syscall"
 
@@ -36,12 +37,10 @@ func main() {
 
 	config := readConfig()
 
-	d := db.NewSqliteDB(config.DB)
-	defer d.Close()
+	likeItDB, close := db.New(config.DB)
+	defer close()
 
-	likesDB := db.NewLikesSqlite(d)
-
-	likeIt := likeit.New(likesDB)
+	likeIt := likeit.New(likeItDB)
 
 	httpServer := server.New(ctx, config.Server)
 	httpServer.SetupStaticRoutes(staticFS)
@@ -51,5 +50,7 @@ func main() {
 
 	<-ctx.Done()
 
-	httpServer.Shutdown()
+	if err := httpServer.Shutdown(); err != nil {
+		log.Fatal("Failed to shutdown the server gracefully")
+	}
 }

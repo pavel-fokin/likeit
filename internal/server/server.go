@@ -47,16 +47,16 @@ func New(ctx context.Context, config Config) *Server {
 	}
 }
 
-func (s *Server) Start() {
+func (s *Server) Start() error {
 	log.Println("Starting likeit HTTP server... ", s.config.Port)
-	s.server.ListenAndServe()
+	return s.server.ListenAndServe()
 }
 
-func (s *Server) Shutdown() {
-	shutdownCtx, cancelShutdownCtx := context.WithTimeout(
+func (s *Server) Shutdown() error {
+	ctx, cancel := context.WithTimeout(
 		context.Background(), time.Duration(s.config.ShutdownTimeout)*time.Second,
 	)
-	defer cancelShutdownCtx()
+	defer cancel()
 
-	s.server.Shutdown(shutdownCtx)
+	return s.server.Shutdown(ctx)
 }
