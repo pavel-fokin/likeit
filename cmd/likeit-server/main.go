@@ -11,15 +11,10 @@ import (
 
 	"pavel-fokin/likeit/internal/db"
 	likesdb "pavel-fokin/likeit/internal/db/likes"
-	"pavel-fokin/likeit/internal/likes"
+	"pavel-fokin/likeit/internal/likeit"
 	"pavel-fokin/likeit/internal/server"
 	"pavel-fokin/likeit/web"
 )
-
-// var (
-// 	//go:embed web/dist
-// 	web embed.FS
-// )
 
 type Config struct {
 	Server server.Config
@@ -47,11 +42,11 @@ func main() {
 
 	likesDB := likesdb.New(db)
 
-	likes := likes.New(likesDB)
+	likeIt := likeit.New(likesDB)
 
 	httpServer := server.New(config.Server)
 	httpServer.SetupStaticRoutes(staticFS)
-	httpServer.SetupLikesAPIRoutes(likes)
+	httpServer.SetupLikesAPIRoutes(likeIt)
 
 	go httpServer.Start()
 

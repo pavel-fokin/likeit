@@ -1,8 +1,8 @@
 package api
 
 import (
-  "fmt"
 	"context"
+	"fmt"
 	"net/http"
 	"net/http/httptest"
 	"testing"
@@ -15,12 +15,12 @@ type LikesMock struct {
 	mock.Mock
 }
 
-func (m *LikesMock) Count(ctx context.Context) (int, error) {
+func (m *LikesMock) CountLikes(ctx context.Context) (int, error) {
 	args := m.Called()
 	return 0, args.Error(0)
 }
 
-func (m *LikesMock) Increment(ctx context.Context) error {
+func (m *LikesMock) IncrementLikes(ctx context.Context) error {
 	args := m.Called()
 	return args.Error(0)
 }
@@ -31,7 +31,7 @@ func TestLikesGet_Success(t *testing.T) {
 	w := httptest.NewRecorder()
 
 	likes := &LikesMock{}
-	likes.On("Count").Return(nil)
+	likes.On("CountLikes").Return(nil)
 
 	// Test.
 	LikesGet(likes)(w, req)
@@ -40,7 +40,7 @@ func TestLikesGet_Success(t *testing.T) {
 	resp := w.Result()
 	assert.Equal(t, 200, resp.StatusCode)
 
-	likes.AssertNumberOfCalls(t, "Count", 1)
+	likes.AssertNumberOfCalls(t, "CountLikes", 1)
 }
 
 func TestLikesGet_Failure(t *testing.T) {
@@ -49,7 +49,7 @@ func TestLikesGet_Failure(t *testing.T) {
 	w := httptest.NewRecorder()
 
 	likes := &LikesMock{}
-	likes.On("Count").Return(fmt.Errorf("error"))
+	likes.On("CountLikes").Return(fmt.Errorf("error"))
 
 	// Test.
 	LikesGet(likes)(w, req)
@@ -58,18 +58,18 @@ func TestLikesGet_Failure(t *testing.T) {
 	resp := w.Result()
 	assert.Equal(t, 500, resp.StatusCode)
 
-	likes.AssertNumberOfCalls(t, "Count", 1)
+	likes.AssertNumberOfCalls(t, "CountLikes", 1)
 }
 
 func TestLikesPost_Success(t *testing.T) {
-  assert := assert.New(t)
+	assert := assert.New(t)
 
 	// Setup.
 	req, _ := http.NewRequest("", "", nil)
 	w := httptest.NewRecorder()
 
 	likes := &LikesMock{}
-	likes.On("Increment").Return(nil)
+	likes.On("IncrementLikes").Return(nil)
 
 	// Test.
 	LikesPost(likes)(w, req)
@@ -78,18 +78,18 @@ func TestLikesPost_Success(t *testing.T) {
 	resp := w.Result()
 	assert.Equal(204, resp.StatusCode)
 
-	likes.AssertNumberOfCalls(t, "Increment", 1)
+	likes.AssertNumberOfCalls(t, "IncrementLikes", 1)
 }
 
 func TestLikesPost_Failure(t *testing.T) {
-  assert := assert.New(t)
+	assert := assert.New(t)
 
 	// Setup.
 	req, _ := http.NewRequest("", "", nil)
 	w := httptest.NewRecorder()
 
 	likes := &LikesMock{}
-	likes.On("Increment").Return(fmt.Errorf("error"))
+	likes.On("IncrementLikes").Return(fmt.Errorf("error"))
 
 	// Test.
 	LikesPost(likes)(w, req)
@@ -98,5 +98,5 @@ func TestLikesPost_Failure(t *testing.T) {
 	resp := w.Result()
 	assert.Equal(500, resp.StatusCode)
 
-	likes.AssertNumberOfCalls(t, "Increment", 1)
+	likes.AssertNumberOfCalls(t, "IncrementLikes", 1)
 }

@@ -7,16 +7,16 @@ import (
 )
 
 type LikesCounter interface {
-	Count(ctx context.Context) (int, error)
+	CountLikes(ctx context.Context) (int, error)
 }
 
 type LikesIncrementor interface {
-	Increment(ctx context.Context) error
+	IncrementLikes(ctx context.Context) error
 }
 
 func LikesGet(likes LikesCounter) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		count, err := likes.Count(r.Context())
+		count, err := likes.CountLikes(r.Context())
 		if err != nil {
 			httputil.AsErrorResponse(w, err, http.StatusInternalServerError)
 			return
@@ -34,10 +34,10 @@ func LikesGet(likes LikesCounter) http.HandlerFunc {
 
 func LikesPost(likes LikesIncrementor) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-    if err := likes.Increment(r.Context()); err != nil {
+		if err := likes.IncrementLikes(r.Context()); err != nil {
 			httputil.AsErrorResponse(w, err, http.StatusInternalServerError)
 			return
-    }
+		}
 		httputil.AsSuccessResponse(w, nil, http.StatusNoContent)
 	}
 }
