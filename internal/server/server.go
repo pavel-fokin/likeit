@@ -2,7 +2,8 @@ package server
 
 import (
 	"context"
-	"fmt"
+	"log"
+	"net"
 	"net/http"
 	"time"
 
@@ -23,7 +24,7 @@ type Server struct {
 	router chi.Router
 }
 
-func New(config Config) *Server {
+func New(ctx context.Context, config Config) *Server {
 	router := chi.NewRouter()
 
 	router.Use(middleware.Logger)
@@ -35,6 +36,9 @@ func New(config Config) *Server {
 		ReadTimeout:  time.Duration(config.ReadTimeout) * time.Second,
 		WriteTimeout: time.Duration(config.WriteTimeout) * time.Second,
 	}
+	server.BaseContext = func(net.Listener) context.Context {
+		return ctx
+	}
 
 	return &Server{
 		config: config,
@@ -44,7 +48,7 @@ func New(config Config) *Server {
 }
 
 func (s *Server) Start() {
-	fmt.Println("Starting likeit HTTP server...", s.config.Port)
+	log.Println("Starting likeit HTTP server... ", s.config.Port)
 	s.server.ListenAndServe()
 }
 

@@ -1,9 +1,9 @@
 package main
 
 import (
+	"context"
 	"fmt"
 	"io/fs"
-	"os"
 	"os/signal"
 	"syscall"
 
@@ -29,8 +29,8 @@ func readConfig() *Config {
 }
 
 func main() {
-	sig := make(chan os.Signal, 1)
-	signal.Notify(sig, syscall.SIGINT, syscall.SIGTERM)
+	ctx, stop := signal.NotifyContext(context.Background(), syscall.SIGINT, syscall.SIGTERM)
+	defer stop()
 
 	staticFS, _ := fs.Sub(web.Dist, "dist")
 
@@ -43,13 +43,13 @@ func main() {
 
 	likeIt := likeit.New(likesDB)
 
-	httpServer := server.New(config.Server)
+	httpServer := server.New(ctx, config.Server)
 	httpServer.SetupStaticRoutes(staticFS)
 	httpServer.SetupLikesAPIRoutes(likeIt)
 
 	go httpServer.Start()
 
-	<-sig
+	<-ctx.Done()
 
 	httpServer.Shutdown()
 }
