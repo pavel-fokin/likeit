@@ -4,7 +4,7 @@ import (
 	"context"
 )
 
-// Likes is a domain model that represents the number of likes.
+// Likes is a domain model(type) that represents the number of likes.
 type Likes int
 
 // CountLikes returns the number of Likes.

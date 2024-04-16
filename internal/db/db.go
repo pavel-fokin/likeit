@@ -1,3 +1,4 @@
+// Package db contains the database specific code of the "LikeIt" service.
 package db
 
 import (
