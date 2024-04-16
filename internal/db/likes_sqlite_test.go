@@ -1,4 +1,4 @@
-package likes
+package db
 
 import (
 	"context"
@@ -16,7 +16,7 @@ func TestLikesCount(t *testing.T) {
 	).AddRow(1)
 	mock.ExpectQuery("SELECT count FROM likes;").WillReturnRows(rows)
 
-	likes := New(db)
+	likes := NewLikesSqlite(db)
 
 	// Test.
 	count, err := likes.Count(context.Background())
@@ -33,7 +33,7 @@ func TestLikesIncrement(t *testing.T) {
 	mock.ExpectExec("UPDATE likes SET count = count + 1;").
 		WillReturnResult(sqlmock.NewResult(1, 1))
 
-	likes := New(db)
+	likes := NewLikesSqlite(db)
 
 	// Test.
 	err := likes.Increment(context.Background())

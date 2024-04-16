@@ -11,7 +11,7 @@ type Config struct {
 	DATABASE_URL string `env:"DATABASE_URL" envDefault:":memory:"`
 }
 
-func NewSqlite(config Config) *sql.DB {
+func NewSqliteDB(config Config) *sql.DB {
 
 	conn, err := sql.Open("sqlite", config.DATABASE_URL)
 	if err != nil {

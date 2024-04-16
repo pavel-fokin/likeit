@@ -10,7 +10,6 @@ import (
 	"github.com/caarlos0/env/v6"
 
 	"pavel-fokin/likeit/internal/db"
-	likesdb "pavel-fokin/likeit/internal/db/likes"
 	"pavel-fokin/likeit/internal/likeit"
 	"pavel-fokin/likeit/internal/server"
 	"pavel-fokin/likeit/web"
@@ -37,10 +36,10 @@ func main() {
 
 	config := readConfig()
 
-	db := db.NewSqlite(config.DB)
-	defer db.Close()
+	d := db.NewSqliteDB(config.DB)
+	defer d.Close()
 
-	likesDB := likesdb.New(db)
+	likesDB := db.NewLikesSqlite(d)
 
 	likeIt := likeit.New(likesDB)
 
