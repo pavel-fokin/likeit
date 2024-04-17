@@ -6,7 +6,7 @@ RUN apk add g++ make py3-pip
 
 WORKDIR /frontend
 
-COPY package.json package-lock.json .postcssrc tailwind.config.js ./
+COPY package.json package-lock.json ./
 COPY web web
 
 RUN npm install
@@ -21,11 +21,11 @@ COPY --from=node /frontend .
 RUN go mod download
 RUN go mod verify
 
-RUN CGO_ENABLED=0 GOOS=$TARGETOS GOARCH=$TARGETARCH go build -o /server cmd/likeit-server/main.go
+RUN CGO_ENABLED=0 GOOS=$TARGETOS GOARCH=$TARGETARCH go build -o /likeit-service cmd/likeit-service/main.go
 
-FROM gcr.io/distroless/static-debian11
+FROM gcr.io/distroless/static-debian12
 
-COPY --from=golang /server .
+COPY --from=golang /likeit-service .
 
 EXPOSE 8080
 

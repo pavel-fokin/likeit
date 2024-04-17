@@ -18,8 +18,8 @@ type LikeIt struct {
 
 var _ app.DB = (*LikeIt)(nil)
 
-func New(dbURL string) (app.DB, func() error) {
-	db, err := sql.Open("sqlite", dbURL)
+func New(url string) (app.DB, func() error) {
+	db, err := sql.Open("sqlite", url)
 	if err != nil {
 		log.Fatal(err)
 	}

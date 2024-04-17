@@ -42,15 +42,15 @@ func main() {
 
 	likeitApp := app.New(likeitDB)
 
-	httpServer := server.New(ctx, config.Server)
-	httpServer.SetupStaticRoutes(staticFS)
-	httpServer.SetupLikesAPIRoutes(likeitApp)
+	likeitServer := server.New(ctx, config.Server)
+	likeitServer.SetupStaticRoutes(staticFS)
+	likeitServer.SetupLikesAPIRoutes(likeitApp)
 
-	go httpServer.Start()
+	go likeitServer.Start()
 
 	<-ctx.Done()
 
-	if err := httpServer.Shutdown(); err != nil {
+	if err := likeitServer.Shutdown(); err != nil {
 		log.Fatal("Failed to shutdown the server gracefully")
 	}
 }
