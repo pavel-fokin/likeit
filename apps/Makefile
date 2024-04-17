@@ -1,18 +1,23 @@
-.PHONY: build-frontend
-build-frontend:
+.PHONY: clean
+clean:
+	$(MAKE) -C likeit-frontend clean
+	$(MAKE) -C likeit-backend clean
+
+.PHONY: frontend
+frontend:
 	$(MAKE) -C likeit-frontend build
+
+.PHONY: run
+build: frontend
+	@cp -r likeit-frontend/dist likeit-backend/web
+	$(MAKE) -C likeit-backend build
 
 .PHONY: tests
 tests:
 	${MAKE} -C likeit-backend tests
 
-.PHONY: run
-run: frontend
-	@cp -r likeit-frontend/dist likeit-backend/web
-	$(MAKE) -C likeit-backend run
-
-.PHONY: build-docker
-docker-build:
+.PHONY: docker
+docker:
 	@docker build -t likeit -f Dockerfile .
 
 .PHONY: run-docker

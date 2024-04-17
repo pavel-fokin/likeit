@@ -1,3 +1,8 @@
+.PHONY: clean
+clean:
+	@rm -rf web/dist/*
+	@rm -rf bin/*
+
 .PHONY: build
 build:
 	@go build -o bin/likeit-service cmd/likeit-service/main.go

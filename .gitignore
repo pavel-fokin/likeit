@@ -1,5 +1,6 @@
 .vscode
 .parcel-cache
+bin
 coverage
 coverage.out
 dist
