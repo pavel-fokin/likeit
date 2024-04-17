@@ -1,6 +1,6 @@
 # LikeIt!
 
-LikeIt service allows to like a web page ¯\\\_(ツ)_/¯.
+LikeIt project allows to like a web page ¯\\\_(ツ)_/¯.
 
 What can be easier than page with one button? The aim of this project to try best practices that I know/learn and consider reasonable.
 

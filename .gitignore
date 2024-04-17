@@ -1,5 +1,6 @@
 .vscode
 .parcel-cache
+coverage
 coverage.out
 dist
 node_modules

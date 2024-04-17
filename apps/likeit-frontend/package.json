@@ -1,0 +1,13 @@
+{
+  "scripts": {
+    "build": "npx parcel build index.html --public-url /static"
+  },
+  "devDependencies": {
+    "parcel": "^2.10.1"
+  },
+  "dependencies": {
+    "@radix-ui/themes": "^2.0.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  }
+}

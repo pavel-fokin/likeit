@@ -29,4 +29,4 @@ COPY --from=golang /likeit-service .
 
 EXPOSE 8080
 
-CMD ["/server"]
+CMD ["/likeit-service"]
