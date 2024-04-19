@@ -3,6 +3,9 @@ package app
 
 import "context"
 
+// Likes is a domain model(type) that represents the number of likes.
+type Likes int
+
 // DB is the interface that wraps the basic operations of the database.
 type DB interface {
 	CountLikes(ctx context.Context) (Likes, error)

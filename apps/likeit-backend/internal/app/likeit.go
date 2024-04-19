@@ -4,9 +4,6 @@ import (
 	"context"
 )
 
-// Likes is a domain model(type) that represents the number of likes.
-type Likes int
-
 // CountLikes returns the number of Likes.
 func (l *App) CountLikes(ctx context.Context) (Likes, error) {
 	likesCount, err := l.db.CountLikes(ctx)

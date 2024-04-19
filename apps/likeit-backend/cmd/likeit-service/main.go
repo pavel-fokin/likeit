@@ -2,7 +2,6 @@ package main
 
 import (
 	"context"
-	"fmt"
 	"io/fs"
 	"log"
 	"os/signal"
@@ -24,7 +23,7 @@ type Config struct {
 func readConfig() *Config {
 	cfg := &Config{}
 	if err := env.Parse(cfg); err != nil {
-		fmt.Printf("%+v\n", err)
+		log.Printf("%+v\n", err)
 	}
 	return cfg
 }
@@ -42,7 +41,7 @@ func main() {
 
 	likeitApp := app.New(likeitDB)
 
-	likeitServer := server.New(ctx, config.Server)
+	likeitServer := server.New(config.Server)
 	likeitServer.SetupStaticRoutes(staticFS)
 	likeitServer.SetupLikesAPIRoutes(likeitApp)
 

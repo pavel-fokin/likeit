@@ -4,7 +4,6 @@ package server
 import (
 	"context"
 	"log"
-	"net"
 	"net/http"
 	"time"
 
@@ -12,11 +11,10 @@ import (
 	"github.com/go-chi/chi/v5/middleware"
 )
 
+const maxShutdownTimeout = 30
+
 type Config struct {
-	Port            string `env:"PORT" envDefault:"8080"`
-	ReadTimeout     int    `env:"LIKEIT_SERVER_READ_TIMEOUT" envDefault:"5"`
-	WriteTimeout    int    `env:"LIKEIT_SERVER_WRITE_TIMEOUT" envDefault:"5"`
-	ShutdownTimeout int    `env:"LIKEIT_SERVER_SHUTDOWN_TIMEOUT" envDefault:"5"`
+	Port string `env:"PORT" envDefault:"8080"`
 }
 
 type Server struct {
@@ -25,20 +23,15 @@ type Server struct {
 	router chi.Router
 }
 
-func New(ctx context.Context, config Config) *Server {
+func New(config Config) *Server {
 	router := chi.NewRouter()
 
 	router.Use(middleware.Logger)
 	router.Use(middleware.Recoverer)
 
 	server := &http.Server{
-		Addr:         ":" + config.Port,
-		Handler:      router,
-		ReadTimeout:  time.Duration(config.ReadTimeout) * time.Second,
-		WriteTimeout: time.Duration(config.WriteTimeout) * time.Second,
-	}
-	server.BaseContext = func(net.Listener) context.Context {
-		return ctx
+		Addr:    ":" + config.Port,
+		Handler: router,
 	}
 
 	return &Server{
@@ -48,14 +41,16 @@ func New(ctx context.Context, config Config) *Server {
 	}
 }
 
-func (s *Server) Start() error {
+func (s *Server) Start() {
 	log.Println("Starting likeit HTTP server... ", s.config.Port)
-	return s.server.ListenAndServe()
+	if err := s.server.ListenAndServe(); err != http.ErrServerClosed {
+		log.Fatalf("Failed to start the server: %v", err)
+	}
 }
 
 func (s *Server) Shutdown() error {
 	ctx, cancel := context.WithTimeout(
-		context.Background(), time.Duration(s.config.ShutdownTimeout)*time.Second,
+		context.Background(), time.Duration(maxShutdownTimeout)*time.Second,
 	)
 	defer cancel()
 

@@ -9,23 +9,14 @@ import (
 	"pavel-fokin/likeit/internal/app"
 )
 
-func TestLikesCount(t *testing.T) {
-	likes, close := New(":memory:")
+func TestLikeItDB(t *testing.T) {
+	likeitDB, close := New(":memory:")
 	defer close()
 
-	// Test.
-	count, err := likes.CountLikes(context.Background())
-
-	assert.Equal(t, count, app.Likes(0))
+	err := likeitDB.IncrementLikes(context.Background())
 	assert.NoError(t, err)
-}
 
-func TestLikesIncrement(t *testing.T) {
-	likes, close := New(":memory:")
-	defer close()
-
-	// Test.
-	err := likes.IncrementLikes(context.Background())
-
+	count, err := likeitDB.CountLikes(context.Background())
 	assert.NoError(t, err)
+	assert.Equal(t, count, app.Likes(1))
 }
