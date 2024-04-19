@@ -63,3 +63,18 @@ func (m *mockLikeItDB) IncrementLikes(ctx context.Context) error {
 	args := m.Called(ctx)
 	return args.Error(0)
 }
+
+func (m *mockLikeItDB) CreateUser(ctx context.Context) (*User, error) {
+	args := m.Called(ctx)
+	return args.Get(0).(*User), args.Error(1)
+}
+
+func (m *mockLikeItDB) FindUser(ctx context.Context, userID string) (*User, error) {
+	args := m.Called(ctx, userID)
+
+	if args.Get(0) == nil {
+		return nil, args.Error(1)
+	}
+
+	return args.Get(0).(*User), args.Error(1)
+}

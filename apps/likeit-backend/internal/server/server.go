@@ -42,7 +42,6 @@ func New(config Config) *Server {
 }
 
 func (s *Server) Start() {
-	log.Println("Starting likeit HTTP server... ", s.config.Port)
 	if err := s.server.ListenAndServe(); err != http.ErrServerClosed {
 		log.Fatalf("Failed to start the server: %v", err)
 	}

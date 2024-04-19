@@ -20,3 +20,26 @@ func TestLikeItDB(t *testing.T) {
 	assert.NoError(t, err)
 	assert.Equal(t, count, app.Likes(1))
 }
+
+func TestCreateUser(t *testing.T) {
+	likeitDB, close := New(":memory:")
+	defer close()
+
+	user, err := likeitDB.CreateUser(context.Background())
+	assert.NoError(t, err)
+	assert.NotNil(t, user)
+}
+
+func TestFindUser(t *testing.T) {
+	likeitDB, close := New(":memory:")
+	defer close()
+
+	user, err := likeitDB.CreateUser(context.Background())
+	assert.NoError(t, err)
+	assert.NotNil(t, user)
+
+	foundUser, err := likeitDB.FindUser(context.Background(), user.ID)
+	assert.NoError(t, err)
+	assert.NotNil(t, foundUser)
+	assert.Equal(t, user.ID, foundUser.ID)
+}

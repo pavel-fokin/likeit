@@ -5,8 +5,8 @@ import (
 )
 
 // CountLikes returns the number of Likes.
-func (l *App) CountLikes(ctx context.Context) (Likes, error) {
-	likesCount, err := l.db.CountLikes(ctx)
+func (a *App) CountLikes(ctx context.Context) (Likes, error) {
+	likesCount, err := a.db.CountLikes(ctx)
 	if err != nil {
 		return 0, err
 	}
@@ -14,8 +14,8 @@ func (l *App) CountLikes(ctx context.Context) (Likes, error) {
 }
 
 // IncrementLikes increments the number of Likes.
-func (l *App) IncrementLikes(ctx context.Context) error {
-	if err := l.db.IncrementLikes(ctx); err != nil {
+func (a *App) IncrementLikes(ctx context.Context) error {
+	if err := a.db.IncrementLikes(ctx); err != nil {
 		return err
 	}
 	return nil

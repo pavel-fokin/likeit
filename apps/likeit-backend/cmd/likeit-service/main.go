@@ -45,10 +45,12 @@ func main() {
 	likeitServer.SetupStaticRoutes(staticFS)
 	likeitServer.SetupLikesAPIRoutes(likeitApp)
 
+	log.Println("Starting LikeIt HTTP server... ", config.Server.Port)
 	go likeitServer.Start()
 
 	<-ctx.Done()
 
+	log.Println("Shutting down the LikeIt HTTP server...")
 	if err := likeitServer.Shutdown(); err != nil {
 		log.Fatal("Failed to shutdown the server gracefully")
 	}

@@ -10,8 +10,10 @@ import (
 	_ "modernc.org/sqlite"
 
 	"pavel-fokin/likeit/internal/app"
+	"pavel-fokin/likeit/internal/db/dbutil"
 )
 
+// LikeIt is a SQLite implementation of the app.DB interface.
 type LikeIt struct {
 	db *sql.DB
 }
@@ -52,4 +54,34 @@ func (l *LikeIt) IncrementLikes(ctx context.Context) error {
 		return fmt.Errorf("failed to update likes with increment: %w", err)
 	}
 	return nil
+}
+
+// CreateUser creates a new user.
+func (l *LikeIt) CreateUser(ctx context.Context) (*app.User, error) {
+	id, err := dbutil.RandomID()
+	if err != nil {
+		return nil, fmt.Errorf("failed to generate random ID: %w", err)
+	}
+
+	_, err = l.db.ExecContext(ctx, "INSERT INTO users (id) VALUES (?);", id)
+	if err != nil {
+		return nil, fmt.Errorf("failed to insert user: %w", err)
+	}
+
+	return &app.User{
+		ID: id,
+	}, nil
+}
+
+// FindUser finds a user by ID.
+func (l *LikeIt) FindUser(ctx context.Context, id string) (*app.User, error) {
+	var userID string
+	err := l.db.QueryRowContext(ctx, "SELECT id FROM users WHERE id = ?;", id).Scan(&userID)
+	if err != nil {
+		return nil, fmt.Errorf("failed to select user: %w", err)
+	}
+
+	return &app.User{
+		ID: userID,
+	}, nil
 }

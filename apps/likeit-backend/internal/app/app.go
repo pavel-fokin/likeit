@@ -10,6 +10,8 @@ type Likes int
 type DB interface {
 	CountLikes(ctx context.Context) (Likes, error)
 	IncrementLikes(ctx context.Context) error
+	CreateUser(ctx context.Context) (*User, error)
+	FindUser(ctx context.Context, userID string) (*User, error)
 }
 
 // App is the application that exposes use cases of the "LikeIt" service.
