@@ -12,7 +12,7 @@ func TestServerStartAndShutdown(t *testing.T) {
 
 func TestServerSetupLikesAPIRoutes(t *testing.T) {
 	s := New(Config{})
-	s.SetupLikesAPIRoutes(nil)
+	s.SetupAPIRoutes(nil)
 }
 
 func TestServerSetupStaticRoutes(t *testing.T) {

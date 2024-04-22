@@ -14,7 +14,8 @@ import (
 const maxShutdownTimeout = 30
 
 type Config struct {
-	Port string `env:"PORT" envDefault:"8080"`
+	Port            string `env:"LIKEIT_SERVER_PORT" envDefault:"8080"`
+	tokenSigningKey string `env:"LIKEIT_TOKEN_SIGNING_KEY" envDefault:"secret"`
 }
 
 type Server struct {

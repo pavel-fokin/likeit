@@ -6,7 +6,7 @@ import (
 	"net/http"
 
 	"pavel-fokin/likeit/internal/app"
-	"pavel-fokin/likeit/internal/server/httputil"
+	"pavel-fokin/likeit/internal/server/apiutil"
 )
 
 type LikesCounter interface {
@@ -27,11 +27,11 @@ func GetLikes(likes LikesCounter) http.HandlerFunc {
 		count, err := likes.CountLikes(r.Context())
 		if err != nil {
 			slog.ErrorContext(r.Context(), "failed to get likes", "err", err)
-			httputil.AsErrorResponse(w, err, http.StatusInternalServerError)
+			apiutil.AsErrorResponse(w, err, http.StatusInternalServerError)
 			return
 		}
 
-		httputil.AsSuccessResponse(
+		apiutil.AsSuccessResponse(
 			w,
 			GetLikesResponse{
 				Likes: int(count),
@@ -45,10 +45,10 @@ func PostLikes(likes LikesIncrementor) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		if err := likes.IncrementLikes(r.Context()); err != nil {
 			slog.ErrorContext(r.Context(), "failed to increment likes", "err", err)
-			httputil.AsErrorResponse(w, err, http.StatusInternalServerError)
+			apiutil.AsErrorResponse(w, err, http.StatusInternalServerError)
 			return
 		}
 
-		httputil.AsSuccessResponse(w, nil, http.StatusNoContent)
+		apiutil.AsSuccessResponse(w, nil, http.StatusNoContent)
 	}
 }

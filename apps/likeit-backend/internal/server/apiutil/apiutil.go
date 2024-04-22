@@ -1,4 +1,4 @@
-package httputil
+package apiutil
 
 import (
 	"encoding/json"
@@ -34,7 +34,7 @@ func AsErrorResponse(
 
 // AsSuccessResponse.
 func AsSuccessResponse(
-	w http.ResponseWriter, payload interface{}, statusCode int,
+	w http.ResponseWriter, payload any, statusCode int,
 ) {
 	if payload != nil {
 		w.Header().Set("Content-Type", "application/json")

@@ -20,7 +20,7 @@ type Config struct {
 	DB     db.Config
 }
 
-func readConfig() *Config {
+func NewConfig() *Config {
 	cfg := &Config{}
 	if err := env.Parse(cfg); err != nil {
 		log.Printf("%+v\n", err)
@@ -32,9 +32,7 @@ func main() {
 	ctx, stop := signal.NotifyContext(context.Background(), syscall.SIGINT, syscall.SIGTERM)
 	defer stop()
 
-	staticFS, _ := fs.Sub(web.Dist, "dist")
-
-	config := readConfig()
+	config := NewConfig()
 
 	likeitDB, close := db.New(config.DB)
 	defer close()
@@ -42,8 +40,12 @@ func main() {
 	likeitApp := app.New(likeitDB)
 
 	likeitServer := server.New(config.Server)
+	// Setup static routes.
+	staticFS, _ := fs.Sub(web.Dist, "dist")
 	likeitServer.SetupStaticRoutes(staticFS)
-	likeitServer.SetupLikesAPIRoutes(likeitApp)
+	// Setup API routes.
+	likeitServer.SetupAuthRoutes(likeitApp)
+	likeitServer.SetupAPIRoutes(likeitApp)
 
 	log.Println("Starting LikeIt HTTP server... ", config.Server.Port)
 	go likeitServer.Start()
@@ -54,4 +56,5 @@ func main() {
 	if err := likeitServer.Shutdown(); err != nil {
 		log.Fatal("Failed to shutdown the server gracefully")
 	}
+	log.Println("LikeIt HTTP server shutdown successfully")
 }
