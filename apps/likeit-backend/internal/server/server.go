@@ -29,6 +29,7 @@ func New(config Config) *Server {
 
 	router.Use(middleware.Logger)
 	router.Use(middleware.Recoverer)
+	router.Use(middleware.Compress(5, "text/html", "text/css", "application/javascript"))
 
 	server := &http.Server{
 		Addr:    ":" + config.Port,

@@ -10,12 +10,17 @@ func TestServerStartAndShutdown(t *testing.T) {
 	s.Shutdown()
 }
 
-func TestServerSetupLikesAPIRoutes(t *testing.T) {
+func TestSetupLikesAPI(t *testing.T) {
 	s := New(Config{})
-	s.SetupAPIRoutes(nil)
+	s.SetupLikesAPI(nil)
 }
 
-func TestServerSetupStaticRoutes(t *testing.T) {
+func TestSetupAuthAPI(t *testing.T) {
+	s := New(Config{})
+	s.SetupAuthAPI(nil)
+}
+
+func TestSetupStaticRoutes(t *testing.T) {
 	s := New(Config{})
 	s.SetupStaticRoutes(nil)
 }

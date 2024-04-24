@@ -21,4 +21,4 @@ export const LikeIt = () => {
   );
 };
 
-export default { LikeIt };
+export default LikeIt;

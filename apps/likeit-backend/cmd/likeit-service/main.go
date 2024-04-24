@@ -44,8 +44,8 @@ func main() {
 	staticFS, _ := fs.Sub(web.Dist, "dist")
 	likeitServer.SetupStaticRoutes(staticFS)
 	// Setup API routes.
-	likeitServer.SetupAuthRoutes(likeitApp)
-	likeitServer.SetupAPIRoutes(likeitApp)
+	likeitServer.SetupLikesAPI(likeitApp)
+	likeitServer.SetupAuthAPI(likeitApp)
 
 	log.Println("Starting LikeIt HTTP server... ", config.Server.Port)
 	go likeitServer.Start()

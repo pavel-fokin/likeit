@@ -8,4 +8,24 @@ export const LikesIncrement = async () => {
   const resp = await fetch('/api/likes', { method: 'POST' });
 };
 
-export default { LikesCount, LikesIncrement }
+export const SignIn = async (username: string, password: string) => {
+  const resp = await fetch('/api/auth/signin', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ username, password }),
+  });
+  const data = await resp.json();
+  return data.token;
+}
+
+export const SignUp = async (username: string, password: string) => {
+  const resp = await fetch('/api/auth/signup', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ username, password }),
+  });
+  const data = await resp.json();
+  return data.token;
+}
+
+export default { LikesCount, LikesIncrement, SignIn, SignUp }
