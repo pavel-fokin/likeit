@@ -12,6 +12,10 @@ clean:
 	${MAKE} -C apps clean
 	@rm -rf bin
 
-.PHONY: run
-run: build
-	./bin/likeit-service
+.PHONY: run-be
+run-be:
+	-cd apps/likeit-backend && go run cmd/likeit-service/main.go
+
+.PHONY: run-fe
+run-fe:
+	-cd apps/likeit-frontend && bun run dev

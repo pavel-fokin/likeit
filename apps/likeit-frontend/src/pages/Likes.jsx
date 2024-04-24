@@ -1,13 +1,21 @@
 import React from "react";
+import { Navigate } from "react-router-dom";
 
-import { Flex, Button, Box } from '@radix-ui/themes';
+import { Flex, Button } from '@radix-ui/themes';
 
 import { LikeIt } from '../components';
+import { useAuth } from '../hooks/useAuth';
 
 export const Likes = () => {
+  const { user } = useAuth();
+
+  if (!user) {
+    return <Navigate to="/signin" />;
+  }
+
   return (
     <Flex
-      style={{ height: '100vh' }}
+      height="100vh"
       direction="column"
       gap="2"
     >

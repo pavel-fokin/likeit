@@ -1,3 +1,2 @@
-import LikeIt from './LikeIt';
-
-export { LikeIt }
+export { AuthProvider } from './AuthProvider';
+export { LikeIt } from './LikeIt';

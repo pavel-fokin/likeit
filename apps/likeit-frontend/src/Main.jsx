@@ -6,9 +6,11 @@ import {
 
 import { Theme } from "@radix-ui/themes";
 import { ThemeProvider } from 'next-themes';
-import '@radix-ui/themes/styles.css';
 
-import { Landing, Likes } from "./pages";
+import { AuthProvider } from "./components";
+import { Landing, Likes, SignIn, SignUp } from "./pages";
+
+import '@radix-ui/themes/styles.css';
 
 const router = createBrowserRouter([
   {
@@ -18,17 +20,27 @@ const router = createBrowserRouter([
   {
     path: "/app",
     element: <Likes />
+  },
+  {
+    path: "/signin",
+    element: <SignIn />
+  },
+  {
+    path: "/signup",
+    element: <SignUp />
   }
 ]);
 
-export const App = () => {
+export const Main = () => {
   return (
     <ThemeProvider attribute="class">
-      <Theme>
-        <RouterProvider router={router} />
+      <Theme scaling="110%">
+        <AuthProvider>
+          <RouterProvider router={router} />
+        </AuthProvider>
       </Theme>
     </ThemeProvider>
   );
 };
 
-export default App;
+export default Main;

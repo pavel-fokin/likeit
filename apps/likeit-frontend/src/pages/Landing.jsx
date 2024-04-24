@@ -13,7 +13,7 @@ export const Landing = () => {
                 <header>
                     <nav>
                         <Flex gap="4" align="baseline">
-                            <Button asChild variant="ghost"><a href="/app">Sign In</a></Button>
+                            <Button asChild variant="ghost"><a href="/signin">Sign In</a></Button>
                             <Button asChild><a href="/signup">Sign Up</a></Button>
                         </Flex>
                     </nav>
@@ -35,7 +35,7 @@ export const Landing = () => {
                 </main>
             </Flex>
             <footer>
-                <p>© 2024 Like It! All rights reserved.</p>
+                <Text as="p" align="center">© 2024 Like It! All rights reserved.</Text>
             </footer>
         </Flex>
     );
