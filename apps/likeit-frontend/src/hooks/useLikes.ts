@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-import api from "../api";
+import api from "../api/api";
 
 export const useLikes = () => {
   const [likesCounter, setLikesCounter] = useState(0);

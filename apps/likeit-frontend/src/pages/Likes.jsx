@@ -1,16 +1,25 @@
-import React from "react";
-import { Navigate } from "react-router-dom";
+import React, { useContext } from "react";
+import { Navigate, useNavigate } from "react-router-dom";
 
 import { Flex, Button } from '@radix-ui/themes';
 
+import { AuthContext } from '../contexts/AuthContext';
 import { LikeIt } from '../components';
 import { useAuth } from '../hooks/useAuth';
 
 export const Likes = () => {
-  const { user } = useAuth();
+  const { isAuthenticated } = useContext(AuthContext);
+  const { signOut } = useAuth();
 
-  if (!user) {
+  const navigate = useNavigate();
+
+  if (!isAuthenticated()) {
     return <Navigate to="/signin" />;
+  }
+
+  const onSignOut = async () => {
+    await signOut();
+    navigate('/');
   }
 
   return (
@@ -22,7 +31,7 @@ export const Likes = () => {
       <Flex p="4" direction="column" align="end">
         <header>
           <nav>
-            <Button asChild variant="ghost"><a href="/">Sign out</a></Button>
+            <Button asChild variant="ghost" onClick={onSignOut}><a href="/">Sign out</a></Button>
           </nav>
         </header>
       </Flex>

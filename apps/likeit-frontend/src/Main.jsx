@@ -7,7 +7,7 @@ import {
 import { Theme } from "@radix-ui/themes";
 import { ThemeProvider } from 'next-themes';
 
-import { AuthProvider } from "./components";
+import { AuthContextProvider } from "./contexts/AuthContext";
 import { Landing, Likes, SignIn, SignUp } from "./pages";
 
 import '@radix-ui/themes/styles.css';
@@ -18,16 +18,16 @@ const router = createBrowserRouter([
     element: <Landing />,
   },
   {
-    path: "/app",
-    element: <Likes />
-  },
-  {
     path: "/signin",
     element: <SignIn />
   },
   {
     path: "/signup",
     element: <SignUp />
+  },
+  {
+    path: "/app",
+    element: <Likes />
   }
 ]);
 
@@ -35,9 +35,9 @@ export const Main = () => {
   return (
     <ThemeProvider attribute="class">
       <Theme scaling="110%">
-        <AuthProvider>
+        <AuthContextProvider>
           <RouterProvider router={router} />
-        </AuthProvider>
+        </AuthContextProvider>
       </Theme>
     </ThemeProvider>
   );

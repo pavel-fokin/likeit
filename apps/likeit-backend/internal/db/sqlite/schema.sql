@@ -5,7 +5,9 @@ CREATE TABLE IF NOT EXISTS likes (
 
 CREATE TABLE IF NOT EXISTS users (
   pk integer not null primary key autoincrement,
-  id text not null unique
+  id text not null unique,
+  username text not null unique,
+  password text not null
 );
 
 INSERT OR IGNORE INTO likes (pk, count) VALUES (0, 0);

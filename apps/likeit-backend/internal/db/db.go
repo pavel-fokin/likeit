@@ -10,7 +10,7 @@ import (
 
 type Config struct {
 	DATABASE_TYPE string `env:"LIKEIT_DATABASE_TYPE" envDefault:"sqlite"`
-	DATABASE_URL  string `env:"LIKEIT_DATABASE_URL" envDefault:":memory:"`
+	DATABASE_URL  string `env:"LIKEIT_DATABASE_URL" envDefault:"file:memdb1?mode=memory&cache=shared"`
 }
 
 type closeFunc func() error

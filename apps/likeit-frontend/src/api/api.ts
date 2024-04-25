@@ -15,7 +15,7 @@ export const SignIn = async (username: string, password: string) => {
     body: JSON.stringify({ username, password }),
   });
   const data = await resp.json();
-  return data.token;
+  return data.accessToken;
 }
 
 export const SignUp = async (username: string, password: string) => {
@@ -25,7 +25,7 @@ export const SignUp = async (username: string, password: string) => {
     body: JSON.stringify({ username, password }),
   });
   const data = await resp.json();
-  return data.token;
+  return data.accessToken;
 }
 
 export default { LikesCount, LikesIncrement, SignIn, SignUp }

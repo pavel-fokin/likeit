@@ -57,13 +57,13 @@ func (l *LikeIt) IncrementLikes(ctx context.Context) error {
 }
 
 // CreateUser creates a new user.
-func (l *LikeIt) CreateUser(ctx context.Context) (*app.User, error) {
+func (l *LikeIt) CreateUser(ctx context.Context, username, password string) (*app.User, error) {
 	id, err := dbutil.RandomID()
 	if err != nil {
 		return nil, fmt.Errorf("failed to generate random ID: %w", err)
 	}
 
-	_, err = l.db.ExecContext(ctx, "INSERT INTO users (id) VALUES (?);", id)
+	_, err = l.db.ExecContext(ctx, "INSERT INTO users (id, username, password) VALUES (?, ?, ?);", id, username, password)
 	if err != nil {
 		return nil, fmt.Errorf("failed to insert user: %w", err)
 	}
@@ -74,9 +74,9 @@ func (l *LikeIt) CreateUser(ctx context.Context) (*app.User, error) {
 }
 
 // FindUser finds a user by ID.
-func (l *LikeIt) FindUser(ctx context.Context, id string) (*app.User, error) {
+func (l *LikeIt) FindUser(ctx context.Context, username string) (*app.User, error) {
 	var userID string
-	err := l.db.QueryRowContext(ctx, "SELECT id FROM users WHERE id = ?;", id).Scan(&userID)
+	err := l.db.QueryRowContext(ctx, "SELECT id FROM users WHERE username = ?;", username).Scan(&userID)
 	if err != nil {
 		return nil, fmt.Errorf("failed to select user: %w", err)
 	}

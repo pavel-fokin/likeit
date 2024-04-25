@@ -11,13 +11,13 @@ import (
 	"pavel-fokin/likeit/internal/server/apiutil"
 )
 
-type AppAuth interface {
-	SignIn(ctx context.Context, userID string) (*app.User, error)
-	SignUp(ctx context.Context) (*app.User, error)
+type Auth interface {
+	SignIn(ctx context.Context, username, password string) (*app.User, error)
+	SignUp(ctx context.Context, username, password string) (*app.User, error)
 }
 
 // SignIn signs in a user.
-func SignIn(app AppAuth, tokenSigningKey string) http.HandlerFunc {
+func SignIn(app Auth, tokenSigningKey string) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		ctx := r.Context()
 
@@ -28,7 +28,7 @@ func SignIn(app AppAuth, tokenSigningKey string) http.HandlerFunc {
 			return
 		}
 
-		user, err := app.SignIn(ctx, req.UserID)
+		user, err := app.SignIn(ctx, req.Username, req.Password)
 		if err != nil {
 			slog.ErrorContext(ctx, "failed to sign in user", "err", err)
 			apiutil.AsErrorResponse(w, err, http.StatusInternalServerError)
@@ -49,12 +49,20 @@ func SignIn(app AppAuth, tokenSigningKey string) http.HandlerFunc {
 }
 
 // SignUp signs up a user.
-func SignUp(app AppAuth, tokenSigningKey string) http.HandlerFunc {
+func SignUp(app Auth, tokenSigningKey string) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		ctx := r.Context()
 
-		user, err := app.SignUp(ctx)
+		var req SignUpRequest
+		if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+			slog.ErrorContext(ctx, "failed to decode request body", "err", err)
+			apiutil.AsErrorResponse(w, err, http.StatusBadRequest)
+			return
+		}
+
+		user, err := app.SignUp(ctx, req.Username, req.Password)
 		if err != nil {
+			slog.ErrorContext(ctx, "failed to sign up user", "err", err)
 			http.Error(w, fmt.Sprintf("failed to sign up user: %v", err), http.StatusInternalServerError)
 			return
 		}
