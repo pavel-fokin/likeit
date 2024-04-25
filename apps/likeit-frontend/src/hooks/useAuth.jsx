@@ -1,14 +1,10 @@
 import { useState, useMemo } from "react";
 
-import { SignIn, SignUp } from "../api/api";
+import { SignIn, SignUp } from "../api";
 
 // useAuth custom hook
 export const useAuth = () => {
     const [accessToken, setAccessToken] = useState(localStorage.getItem("accessToken"));
-
-    const isAuthenticated = () => localStorage.getItem("accessToken") !== null;
-
-    const isAuthenticatedMemo = useMemo(() => isAuthenticated(), [accessToken]);
 
     const signIn = async (username, password) => {
         const token = await SignIn(username, password);
@@ -37,7 +33,6 @@ export const useAuth = () => {
 
     return {
         accessToken,
-        isAuthenticated,
         signIn,
         signUp,
         signOut,

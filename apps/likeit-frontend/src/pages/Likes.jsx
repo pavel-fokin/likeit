@@ -1,19 +1,17 @@
 import React, { useContext } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
 
-import { Flex, Button } from '@radix-ui/themes';
+import { Button, Flex } from '@radix-ui/themes';
 
-import { AuthContext } from '../contexts/AuthContext';
 import { LikeIt } from '../components';
-import { useAuth } from '../hooks/useAuth';
+import { AuthContext } from '../contexts/AuthContext';
 
 export const Likes = () => {
-  const { isAuthenticated } = useContext(AuthContext);
-  const { signOut } = useAuth();
+  const { isAuthenticated, signOut } = useContext(AuthContext);
 
   const navigate = useNavigate();
 
-  if (!isAuthenticated()) {
+  if (!isAuthenticated) {
     return <Navigate to="/signin" />;
   }
 
