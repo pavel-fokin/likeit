@@ -8,7 +8,7 @@ import { Theme } from "@radix-ui/themes";
 import { ThemeProvider } from 'next-themes';
 
 import { AuthContextProvider } from "./contexts/AuthContext";
-import { Landing, Likes, SignIn, SignUp } from "./pages";
+import { Landing, App, SignIn, SignUp } from "./pages";
 
 import '@radix-ui/themes/styles.css';
 
@@ -27,11 +27,11 @@ const router = createBrowserRouter([
   },
   {
     path: "/app",
-    element: <Likes />
+    element: <App />
   }
 ]);
 
-export const Main = () => {
+export const Root = () => {
   return (
     <ThemeProvider attribute="class">
       <Theme scaling="110%">
@@ -43,4 +43,4 @@ export const Main = () => {
   );
 };
 
-export default Main;
+export default Root;

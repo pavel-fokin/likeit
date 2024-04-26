@@ -8,7 +8,7 @@ import { AuthContext } from '../contexts/AuthContext';
 import { useAuth } from '../hooks/useAuth';
 
 export const Likes = () => {
-  const { isAuthenticated } = useContext(AuthContext);
+  const { isAuthenticated, setIsAuthenticated } = useContext(AuthContext);
   const { signOut } = useAuth();
 
   const navigate = useNavigate();
@@ -17,10 +17,9 @@ export const Likes = () => {
     return <Navigate to="/signin" />;
   }
 
-  const onSignOut = async () => {
-    if (await signOut()) {
-      navigate('/');
-    }
+  const onSignOut = () => {
+    signOut();
+    setIsAuthenticated(false);
   }
 
   return (
