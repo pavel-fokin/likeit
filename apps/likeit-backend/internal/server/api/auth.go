@@ -2,7 +2,6 @@ package api
 
 import (
 	"context"
-	"encoding/json"
 	"fmt"
 	"log/slog"
 	"net/http"
@@ -22,8 +21,8 @@ func SignIn(app Auth, tokenSigningKey string) http.HandlerFunc {
 		ctx := r.Context()
 
 		var req SignInRequest
-		if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
-			slog.ErrorContext(ctx, "failed to decode request body", "err", err)
+		if err := apiutil.ParseJSON(r, &req); err != nil {
+			slog.ErrorContext(ctx, "failed to parse request body", "err", err)
 			apiutil.AsErrorResponse(w, err, http.StatusBadRequest)
 			return
 		}
@@ -42,7 +41,7 @@ func SignIn(app Auth, tokenSigningKey string) http.HandlerFunc {
 			return
 		}
 
-		apiutil.AsSuccessResponse(w, SignInResponse{
+		apiutil.AsSuccessResponse(w, &SignInResponse{
 			AccessToken: accessToken,
 		}, http.StatusNoContent)
 	}
@@ -54,8 +53,8 @@ func SignUp(app Auth, tokenSigningKey string) http.HandlerFunc {
 		ctx := r.Context()
 
 		var req SignUpRequest
-		if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
-			slog.ErrorContext(ctx, "failed to decode request body", "err", err)
+		if err := apiutil.ParseJSON(r, &req); err != nil {
+			slog.ErrorContext(ctx, "failed to parse request body", "err", err)
 			apiutil.AsErrorResponse(w, err, http.StatusBadRequest)
 			return
 		}

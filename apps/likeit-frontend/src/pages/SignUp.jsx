@@ -23,7 +23,7 @@ export const SignUp = () => {
     }
 
     return (
-        <Container size="1">
+        <Container size="1" m="2">
             <Flex direction="column" gap="4">
                 <h1>Sign Up</h1>
                 <TextField.Root name="username" autocomplete="off" size="3" placeholder="Your username" onChange={e => { setUsername(e.target.value) }} />
@@ -34,7 +34,6 @@ export const SignUp = () => {
                 </Text>
             </Flex>
         </Container>
-
     );
 };
 

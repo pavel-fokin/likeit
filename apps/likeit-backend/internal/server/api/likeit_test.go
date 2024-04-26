@@ -1,15 +1,12 @@
 package api
 
 import (
-	"context"
 	"fmt"
 	"net/http"
 	"net/http/httptest"
-	"pavel-fokin/likeit/internal/app"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
-	"github.com/stretchr/testify/mock"
 )
 
 func TestGetLikes(t *testing.T) {
@@ -91,18 +88,4 @@ func TestLikesPost(t *testing.T) {
 
 		likes.AssertNumberOfCalls(t, "IncrementLikes", 1)
 	})
-}
-
-type LikesMock struct {
-	mock.Mock
-}
-
-func (m *LikesMock) CountLikes(ctx context.Context) (app.Likes, error) {
-	args := m.Called()
-	return app.Likes(0), args.Error(0)
-}
-
-func (m *LikesMock) IncrementLikes(ctx context.Context) error {
-	args := m.Called()
-	return args.Error(0)
 }

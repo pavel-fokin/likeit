@@ -9,7 +9,7 @@ export const Landing = () => {
             height="100vh"
             gap="2"
         >
-            <Flex p="2" direction="column" align="end">
+            <Flex p="4" direction="column" align="end">
                 <header>
                     <nav>
                         <Flex gap="4" align="baseline">
@@ -34,9 +34,11 @@ export const Landing = () => {
                     </Text>
                 </main>
             </Flex>
-            <footer>
-                <Text as="p" align="center">© 2024 Like It! All rights reserved.</Text>
-            </footer>
+            <Box p="4">
+                <footer>
+                    <Text as="p" align="center">© 2024 Like It! All rights reserved.</Text>
+                </footer>
+            </Box>
         </Flex>
     );
 }

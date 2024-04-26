@@ -4,7 +4,11 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+
+	"github.com/go-playground/validator/v10"
 )
+
+var validate = validator.New(validator.WithRequiredStructEnabled())
 
 type Error struct {
 	Message string `json:"message"`
@@ -42,4 +46,18 @@ func AsSuccessResponse(
 	}
 
 	w.WriteHeader(statusCode)
+}
+
+// ParseJSON parses the request body into the given interface.
+func ParseJSON(r *http.Request, v any) error {
+	decoder := json.NewDecoder(r.Body)
+	if err := decoder.Decode(v); err != nil {
+		return err
+	}
+
+	if err := validate.Struct(v); err != nil {
+		return err
+	}
+
+	return nil
 }

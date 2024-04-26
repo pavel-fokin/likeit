@@ -33,7 +33,7 @@ func GetLikes(likes LikesCounter) http.HandlerFunc {
 
 		apiutil.AsSuccessResponse(
 			w,
-			GetLikesResponse{
+			&GetLikesResponse{
 				Likes: int(count),
 			},
 			http.StatusOK,
