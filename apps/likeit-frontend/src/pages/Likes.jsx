@@ -5,9 +5,11 @@ import { Button, Flex } from '@radix-ui/themes';
 
 import { LikeIt } from '../components';
 import { AuthContext } from '../contexts/AuthContext';
+import { useAuth } from '../hooks/useAuth';
 
 export const Likes = () => {
-  const { isAuthenticated, signOut } = useContext(AuthContext);
+  const { isAuthenticated } = useContext(AuthContext);
+  const { signOut } = useAuth();
 
   const navigate = useNavigate();
 
@@ -16,8 +18,9 @@ export const Likes = () => {
   }
 
   const onSignOut = async () => {
-    await signOut();
-    navigate('/');
+    if (await signOut()) {
+      navigate('/');
+    }
   }
 
   return (
