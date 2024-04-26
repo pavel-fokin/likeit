@@ -3,7 +3,7 @@ CREATE TABLE IF NOT EXISTS likes (
   count integer DEFAULT 0
 );
 
-CREATE TABLE IF NOT EXISTS users (
+CREATE TABLE IF NOT EXISTS user (
   pk integer not null primary key autoincrement,
   id text not null unique,
   username text not null unique,

@@ -11,9 +11,12 @@ import (
 	"github.com/stretchr/testify/assert"
 
 	"pavel-fokin/likeit/internal/app"
+	"pavel-fokin/likeit/internal/server/apiutil"
 )
 
 func TestSignIn(t *testing.T) {
+	apiutil.InitValidation()
+
 	t.Run("Success", func(t *testing.T) {
 		// Setup.
 		body := `{"username": "username", "password": "password"}`

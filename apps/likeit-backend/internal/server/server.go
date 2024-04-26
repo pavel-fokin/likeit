@@ -9,6 +9,8 @@ import (
 
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
+
+	"pavel-fokin/likeit/internal/server/apiutil"
 )
 
 const maxShutdownTimeout = 30
@@ -30,6 +32,10 @@ func New(config Config) *Server {
 	router.Use(middleware.Logger)
 	router.Use(middleware.Recoverer)
 	router.Use(middleware.Compress(5, "text/html", "text/css", "application/javascript"))
+
+	// Initialize the token signing key and validator.
+	apiutil.InitSigningKey(config.tokenSigningKey)
+	apiutil.InitValidation()
 
 	server := &http.Server{
 		Addr:    ":" + config.Port,

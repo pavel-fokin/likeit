@@ -14,6 +14,12 @@ const (
 	accessTokenAudience = "likeit-frontend"
 )
 
+var signingKey string
+
+func InitSigningKey(key string) {
+	signingKey = key
+}
+
 // JWTClaims represents the claims of a JSON Web Token (JWT).
 type JWTClaims struct {
 	jwt.RegisteredClaims
@@ -25,7 +31,7 @@ type JWTClaims struct {
 // It includes the issuer, subject, audience, expiration time, and the user ID as claims.
 // The access token is signed using a signing key.
 // It returns the generated access token as a string and any error encountered during the process.
-func NewAccessToken(userID string, signingKey string) (string, error) {
+func NewAccessToken(userID string) (string, error) {
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, JWTClaims{
 		RegisteredClaims: jwt.RegisteredClaims{
 			Issuer:    accessTokenIssuer,

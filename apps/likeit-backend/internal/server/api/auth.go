@@ -34,7 +34,7 @@ func SignIn(app Auth, tokenSigningKey string) http.HandlerFunc {
 			return
 		}
 
-		accessToken, err := apiutil.NewAccessToken(user.ID, tokenSigningKey)
+		accessToken, err := apiutil.NewAccessToken(user.ID)
 		if err != nil {
 			slog.ErrorContext(ctx, "failed to create access token", "err", err)
 			apiutil.AsErrorResponse(w, err, http.StatusInternalServerError)
@@ -66,7 +66,7 @@ func SignUp(app Auth, tokenSigningKey string) http.HandlerFunc {
 			return
 		}
 
-		accessToken, err := apiutil.NewAccessToken(user.ID, tokenSigningKey)
+		accessToken, err := apiutil.NewAccessToken(user.ID)
 		if err != nil {
 			slog.ErrorContext(ctx, "failed to create access token", "err", err)
 			apiutil.AsErrorResponse(w, err, http.StatusInternalServerError)

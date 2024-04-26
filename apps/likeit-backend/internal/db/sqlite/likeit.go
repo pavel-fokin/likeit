@@ -44,6 +44,7 @@ func (l *LikeIt) CountLikes(ctx context.Context) (app.Likes, error) {
 	if err != nil {
 		return app.Likes(0), fmt.Errorf("failed to select likes count: %w", err)
 	}
+
 	return app.Likes(count), nil
 }
 
@@ -53,6 +54,7 @@ func (l *LikeIt) IncrementLikes(ctx context.Context) error {
 	if err != nil {
 		return fmt.Errorf("failed to update likes with increment: %w", err)
 	}
+
 	return nil
 }
 
@@ -63,25 +65,37 @@ func (l *LikeIt) CreateUser(ctx context.Context, username, password string) (*ap
 		return nil, fmt.Errorf("failed to generate random ID: %w", err)
 	}
 
-	_, err = l.db.ExecContext(ctx, "INSERT INTO users (id, username, password) VALUES (?, ?, ?);", id, username, password)
-	if err != nil {
+	if err := l.db.QueryRowContext(
+		ctx,
+		"INSERT INTO user (id, username, password) VALUES (?, ?, ?) RETURNING password;",
+		id, username, password,
+	).Scan(&password); err != nil {
 		return nil, fmt.Errorf("failed to insert user: %w", err)
 	}
 
 	return &app.User{
-		ID: id,
+		ID:       id,
+		Username: username,
+		Password: password,
 	}, nil
 }
 
-// FindUser finds a user by ID.
+// FindUser finds a user by username.
 func (l *LikeIt) FindUser(ctx context.Context, username string) (*app.User, error) {
-	var userID string
-	err := l.db.QueryRowContext(ctx, "SELECT id FROM users WHERE username = ?;", username).Scan(&userID)
+	var (
+		userID   string
+		password string
+	)
+	err := l.db.QueryRowContext(
+		ctx, "SELECT id, password FROM user WHERE username = ?;", username,
+	).Scan(&userID, &password)
 	if err != nil {
 		return nil, fmt.Errorf("failed to select user: %w", err)
 	}
 
 	return &app.User{
-		ID: userID,
+		ID:       userID,
+		Username: username,
+		Password: password,
 	}, nil
 }

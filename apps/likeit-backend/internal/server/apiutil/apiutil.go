@@ -8,7 +8,11 @@ import (
 	"github.com/go-playground/validator/v10"
 )
 
-var validate = validator.New(validator.WithRequiredStructEnabled())
+var validate *validator.Validate
+
+func InitValidation() {
+	validate = validator.New(validator.WithRequiredStructEnabled())
+}
 
 type Error struct {
 	Message string `json:"message"`

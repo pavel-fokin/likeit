@@ -10,8 +10,8 @@ import (
 
 func TestNewAccessToken(t *testing.T) {
 	userID := "testUserID"
-	signingKey := "secret"
-	tokenString, err := NewAccessToken(userID, signingKey)
+	InitSigningKey("secret")
+	tokenString, err := NewAccessToken(userID)
 	assert.NoError(t, err)
 	assert.NotEmpty(t, tokenString)
 
