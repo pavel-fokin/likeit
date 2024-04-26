@@ -20,12 +20,12 @@ func (s *Server) SetupStaticRoutes(static fs.FS) {
 	)
 }
 
-func (s *Server) SetupLikesAPI(likes api.LikeIt) {
-	s.router.Get("/api/likes", api.GetLikes(likes))
-	s.router.Post("/api/likes", api.PostLikes(likes))
-}
-
 func (s *Server) SetupAuthAPI(auth api.Auth) {
 	s.router.Post("/api/auth/signin", api.SignIn(auth, s.config.tokenSigningKey))
 	s.router.Post("/api/auth/signup", api.SignUp(auth, s.config.tokenSigningKey))
+}
+
+func (s *Server) SetupLikesAPI(likes api.Likes) {
+	s.router.Get("/api/likes", api.GetLikes(likes))
+	s.router.Post("/api/likes", api.PostLikes(likes))
 }

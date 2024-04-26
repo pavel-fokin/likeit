@@ -9,22 +9,14 @@ import (
 	"pavel-fokin/likeit/internal/server/apiutil"
 )
 
-type LikesCounter interface {
+type Likes interface {
 	CountLikes(ctx context.Context) (app.Likes, error)
-}
-
-type LikesIncrementor interface {
 	IncrementLikes(ctx context.Context) error
 }
 
-type LikeIt interface {
-	LikesCounter
-	LikesIncrementor
-}
-
-func GetLikes(likes LikesCounter) http.HandlerFunc {
+func GetLikes(app Likes) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		count, err := likes.CountLikes(r.Context())
+		count, err := app.CountLikes(r.Context())
 		if err != nil {
 			slog.ErrorContext(r.Context(), "failed to get likes", "err", err)
 			apiutil.AsErrorResponse(w, err, http.StatusInternalServerError)
@@ -41,9 +33,9 @@ func GetLikes(likes LikesCounter) http.HandlerFunc {
 	}
 }
 
-func PostLikes(likes LikesIncrementor) http.HandlerFunc {
+func PostLikes(app Likes) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		if err := likes.IncrementLikes(r.Context()); err != nil {
+		if err := app.IncrementLikes(r.Context()); err != nil {
 			slog.ErrorContext(r.Context(), "failed to increment likes", "err", err)
 			apiutil.AsErrorResponse(w, err, http.StatusInternalServerError)
 			return

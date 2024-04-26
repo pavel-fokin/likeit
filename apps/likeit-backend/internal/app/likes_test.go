@@ -5,7 +5,6 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
-	"github.com/stretchr/testify/mock"
 )
 
 func TestCountLikes(t *testing.T) {
@@ -47,34 +46,4 @@ func TestIncrementLikes(t *testing.T) {
 
 	// Verify that the Increment method was called.
 	mockLikesDB.AssertCalled(t, "IncrementLikes", context.Background())
-}
-
-// Mock implementation of the LikesDB interface.
-type mockLikeItDB struct {
-	mock.Mock
-}
-
-func (m *mockLikeItDB) CountLikes(ctx context.Context) (Likes, error) {
-	args := m.Called(ctx)
-	return args.Get(0).(Likes), args.Error(1)
-}
-
-func (m *mockLikeItDB) IncrementLikes(ctx context.Context) error {
-	args := m.Called(ctx)
-	return args.Error(0)
-}
-
-func (m *mockLikeItDB) CreateUser(ctx context.Context, username, password string) (*User, error) {
-	args := m.Called(ctx, username, password)
-	return args.Get(0).(*User), args.Error(1)
-}
-
-func (m *mockLikeItDB) FindUser(ctx context.Context, username string) (*User, error) {
-	args := m.Called(ctx, username)
-
-	if args.Get(0) == nil {
-		return nil, args.Error(1)
-	}
-
-	return args.Get(0).(*User), args.Error(1)
 }
